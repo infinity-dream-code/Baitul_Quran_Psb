@@ -31,9 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
-    // Web service tagihan/pembayaran PSB. URL wajib lengkap dengan http:// (Guzzle menolak tanpa skema).
+    // Web service tagihan/pembayaran PSB. Isi PSB_WS_URL di .env (URL lengkap + http://).
     'psb' => [
-        'ws_url' => env('PSB_WS_URL', 'http://10.99.23.111/WS_PSB/WS_PSB_BAITUL_QURAN/index.php'),
+        'ws_url' => env('PSB_WS_URL'),
     ],
 
 ];
