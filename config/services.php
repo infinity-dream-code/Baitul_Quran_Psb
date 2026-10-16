@@ -33,7 +33,7 @@ return [
 
     // Web service tagihan/pembayaran PSB. URL wajib lengkap dengan http:// (Guzzle menolak tanpa skema).
     'psb' => [
-        'ws_url' => env('PSB_WS_URL', 'http://10.99.23.111/WS_PSB/WS_PSB_AL_ISTIQOMAH/index.php'),
+        'ws_url' => env('PSB_WS_URL', 'http://10.99.23.111/WS_PSB/WS_PSB_BAITUL_QURAN/index.php'),
     ],
 
 ];
