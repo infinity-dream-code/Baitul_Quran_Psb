@@ -6,11 +6,11 @@
 | jadi mengubahnya akan me-logout semua user.
 */
 return [
-    'name' => env('CLIENT_NAME', 'Al Istiqomah'),
-    'city' => env('CLIENT_CITY', 'Kuningan'),
-    'region' => env('CLIENT_REGION', 'Kab. Kuningan, Prov. Jawa Barat'),
-    'logo' => env('CLIENT_LOGO', 'istiqomah.png'),
+    'name' => env('CLIENT_NAME', 'Ponpes Baitul Qur\'an'),
+    'city' => env('CLIENT_CITY', 'Pekanbaru'),
+    'region' => env('CLIENT_REGION', 'Kota Pekanbaru, Prov. Riau'),
+    'logo' => env('CLIENT_LOGO', 'logo_baitul_quran.jpeg'),
 
     // Nomor VA = prefix + nomor pendaftaran (10 digit) = 16 digit.
-    'va_prefix' => env('CLIENT_VA_PREFIX', '797777'),
+    'va_prefix' => env('CLIENT_VA_PREFIX', '777724'),
 ];

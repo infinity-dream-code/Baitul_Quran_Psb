@@ -27,6 +27,11 @@ class EncryptCookies extends Middleware
 
         return $name === $auth
             || $name === RestoreAuthFromCookie::staffCookieName()
-            || $name === 'psbku_uid';
+            || $name === 'psbku_uid'
+            || $name === 'psbku_uid_staff'
+            || $name === 'al_istiqomah_psb_uid'
+            || $name === 'al_istiqomah_psb_uid_staff'
+            || $name === 'psb_baitul_quran'
+            || $name === 'psb_baitul_quran_staff';
     }
 }

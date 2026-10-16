@@ -54,16 +54,62 @@ Route::get('/ServiceLogout', function () {
     return redirect('/ServiceLogin');
 });
 
+// Alias HOME: /admin = dashboard admin; /home jangan jadi dead-end Laravel
+Route::get('/admin', function () {
+    if (!auth()->check()) {
+        \App\Http\Middleware\RestoreAuthFromCookie::attempt(request(), null, true);
+    }
+    if (auth()->check()) {
+        return redirect()->to(\App\Support\AuthRedirect::dashboardPath());
+    }
+
+    return redirect('/ServiceLogin');
+})->name('admin.index');
+
+Route::get('/home', function () {
+    return redirect()->route('admin.index');
+});
+
 // Keep-alive session + refresh CSRF (tanpa login ulang / tanpa pesan sesi)
 Route::get('/session/keepalive', function (\Illuminate\Http\Request $request) {
-    // Jangan rewrite session kalau belum login — kurangi race file session.
-    if ($request->hasSession() && $request->session()->isStarted()) {
-        $request->session()->put('_keepalive_at', now()->timestamp);
+    try {
+        if ($request->hasSession()) {
+            if (!$request->session()->isStarted()) {
+                $request->session()->start();
+            }
+            $request->session()->put('_keepalive_at', now()->timestamp);
+        }
+    } catch (\Throwable $e) {
+        try {
+            $request->session()->regenerate(true);
+            $request->session()->regenerateToken();
+        } catch (\Throwable $ignored) {
+        }
     }
 
     // Session hilang di tengah jalan: buat ulang dari cookie cadangan sesuai halaman yang sedang dibuka.
-    if (!auth()->check() && $request->filled('path')) {
-        \App\Http\Middleware\RestoreAuthFromCookie::attemptForPath($request, (string) $request->query('path'));
+    if (!auth()->check()) {
+        if ($request->filled('path')) {
+            \App\Http\Middleware\RestoreAuthFromCookie::attemptForPath($request, (string) $request->query('path'));
+        } else {
+            \App\Http\Middleware\RestoreAuthFromCookie::attempt($request, null, true);
+        }
+    }
+
+    // Masih belum auth tapi cookie ada: recreate session sekali lagi lalu restore
+    if (!auth()->check()) {
+        try {
+            if ($request->hasSession()) {
+                $request->session()->regenerate();
+                $request->session()->regenerateToken();
+            }
+        } catch (\Throwable $ignored) {
+        }
+        if ($request->filled('path')) {
+            \App\Http\Middleware\RestoreAuthFromCookie::attemptForPath($request, (string) $request->query('path'));
+        } else {
+            \App\Http\Middleware\RestoreAuthFromCookie::attempt($request, null, true);
+        }
     }
 
     return response()->json([

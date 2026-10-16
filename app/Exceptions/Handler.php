@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,7 +31,9 @@ class Handler extends ExceptionHandler
     {
         // Harus sebelum parent::render(): di sana TokenMismatchException sudah diubah jadi
         // HttpException(419) sebelum callback renderable() dijalankan, jadi tidak pernah tertangkap.
-        if ($e instanceof TokenMismatchException) {
+        if ($e instanceof TokenMismatchException
+            || ($e instanceof HttpExceptionInterface && $e->getStatusCode() === 419)
+        ) {
             return $this->recoverFromCsrfMismatch($request);
         }
 
@@ -129,11 +132,11 @@ class Handler extends ExceptionHandler
 
         // Sudah retry sekali: kembali ke form yang sedang diisi (jangan ke login / dashboard)
         if ($request->boolean('_csrf_retry')) {
-            return $this->backToForm($request, 'Sesi diperbarui. Isian Anda sudah dikembalikan, silakan klik simpan sekali lagi.');
+            return $this->backToForm($request, 'Isian Anda sudah dikembalikan, silakan klik simpan sekali lagi.');
         }
 
         if (count($request->allFiles()) > 0) {
-            return $this->backToForm($request, 'Sesi diperbarui. Silakan pilih ulang file lalu klik simpan sekali lagi.');
+            return $this->backToForm($request, 'Silakan pilih ulang file lalu klik simpan sekali lagi.');
         }
 
         if (in_array($request->method(), ['GET', 'HEAD'], true)) {

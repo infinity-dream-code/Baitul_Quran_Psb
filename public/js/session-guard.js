@@ -58,15 +58,17 @@
 
     window.__psbkuRefreshCsrf = refreshToken;
 
-    // Keep-alive tiap 4 menit + saat tab aktif lagi
-    setInterval(refreshToken, 4 * 60 * 1000);
+    // Keep-alive tiap 4 menit + saat tab aktif lagi (tanpa concurrent overlap: pakai promise `refreshing`)
+    setInterval(function () {
+        if (!refreshing && !navigating) refreshToken();
+    }, 4 * 60 * 1000);
     if (document.readyState === 'complete') {
         refreshToken();
     } else {
         window.addEventListener('load', function () { refreshToken(); });
     }
     document.addEventListener('visibilitychange', function () {
-        if (document.visibilityState === 'visible') refreshToken();
+        if (document.visibilityState === 'visible' && !refreshing && !navigating) refreshToken();
     });
 
     // Snapshot isian form sebelum submit; dipulihkan kalau server mengembalikan user ke form

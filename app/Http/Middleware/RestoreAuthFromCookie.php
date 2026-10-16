@@ -34,6 +34,9 @@ class RestoreAuthFromCookie
             }
             $response->headers->setCookie(Cookie::forget('psbku_uid'));
             $response->headers->setCookie(Cookie::forget('psbku_session'));
+            foreach (self::legacyCookieNames() as $legacy) {
+                $response->headers->setCookie(Cookie::forget($legacy));
+            }
         }
 
         return $response;
@@ -44,12 +47,13 @@ class RestoreAuthFromCookie
      *
      * $context = request "halaman tujuan" untuk menentukan role yang dibutuhkan
      * (dipakai keepalive & halaman login). Cookie/session tetap dari $request.
+     * $force = true: abaikan filter path (untuk keepalive / recreate session).
      */
-    public static function attempt(Request $request, ?Request $context = null): bool
+    public static function attempt(Request $request, ?Request $context = null, bool $force = false): bool
     {
         $context = $context ?: $request;
 
-        if (!self::shouldConsiderRestore($context)) {
+        if (!$force && !self::shouldConsiderRestore($context)) {
             return Auth::check();
         }
 
@@ -333,6 +337,24 @@ class RestoreAuthFromCookie
         $primary = self::readUserFrom($request, self::cookieName());
         $staff = self::readUserFrom($request, self::staffCookieName());
 
+        // Migrasi dari instalasi lama (Al Istiqomah / psbku) — baca cookie lama, tulis ulang nama baru.
+        if (!$primary) {
+            foreach (['al_istiqomah_psb_uid', 'psbku_uid'] as $legacy) {
+                $primary = self::readUserFrom($request, $legacy, true);
+                if ($primary) {
+                    break;
+                }
+            }
+        }
+        if (!$staff) {
+            foreach (['al_istiqomah_psb_uid_staff', 'psbku_uid_staff'] as $legacy) {
+                $staff = self::readUserFrom($request, $legacy, true);
+                if ($staff) {
+                    break;
+                }
+            }
+        }
+
         if ($preferStaff) {
             if ($staff && $staff->role !== 'peserta') {
                 return $staff;
@@ -347,9 +369,22 @@ class RestoreAuthFromCookie
         return $primary ?: $staff;
     }
 
-    private static function readUserFrom(Request $request, string $cookieName): ?User
+    /**
+     * @return array<int, string>
+     */
+    private static function legacyCookieNames(): array
     {
-        $userId = self::readUserId($request, $cookieName);
+        return [
+            'al_istiqomah_psb_uid',
+            'al_istiqomah_psb_uid_staff',
+            'psbku_uid',
+            'psbku_uid_staff',
+        ];
+    }
+
+    private static function readUserFrom(Request $request, string $cookieName, bool $legacy = false): ?User
+    {
+        $userId = self::readUserId($request, $cookieName, $legacy);
         if (!$userId) {
             return null;
         }
@@ -361,7 +396,7 @@ class RestoreAuthFromCookie
         }
     }
 
-    private static function readUserId(Request $request, string $cookieName): ?int
+    private static function readUserId(Request $request, string $cookieName, bool $legacy = false): ?int
     {
         $raw = $request->cookies->get($cookieName);
         if (!$raw || !is_string($raw)) {
@@ -374,11 +409,14 @@ class RestoreAuthFromCookie
         }
 
         if (empty($data['app']) || !hash_equals(AppIdentity::fingerprint(), (string) $data['app'])) {
-            Log::info('auth.cookie_rejected_foreign_app', [
-                'cookie' => $cookieName,
-            ]);
+            if (!$legacy) {
+                Log::info('auth.cookie_rejected_foreign_app', [
+                    'cookie' => $cookieName,
+                ]);
 
-            return null;
+                return null;
+            }
+            // Cookie legacy: fingerprint beda karena APP_INSTANCE diganti — tetap terima sekali untuk migrasi.
         }
 
         if ((int) $data['exp'] < time()) {

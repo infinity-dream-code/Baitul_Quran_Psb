@@ -53,7 +53,7 @@ class AuthRedirect
             $path = '/';
         }
 
-        return in_array($path, ['/', '/ServiceLogin', '/enroll', '/login', '/home'], true)
+        return in_array($path, ['/', '/ServiceLogin', '/enroll', '/login', '/home', '/admin'], true)
             || str_starts_with($path, '/ServiceLogin');
     }
 

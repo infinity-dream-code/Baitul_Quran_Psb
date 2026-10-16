@@ -6,14 +6,14 @@
     <meta http-equiv="Cache-Control" content="no-store">
     <title>Memulihkan…</title>
     <style>
-        body { margin: 0; min-height: 100vh; background: #fff; font-family: system-ui, sans-serif; color: #333; }
-        .stop { display: none; max-width: 28rem; margin: 15vh auto; padding: 1.5rem; text-align: center; }
+        body { margin: 0; min-height: 100vh; background: #fff; }
+        .stop { display: none; max-width: 28rem; margin: 15vh auto; padding: 1.5rem; text-align: center; font-family: system-ui, sans-serif; color: #333; }
         .stop a { color: #1d4ed8; }
     </style>
 </head>
 <body>
 <div class="stop" id="stop">
-    <p>Sesi diperbarui. <a href="javascript:history.back()">Kembali</a> · <a href="{{ url('/') }}">Beranda</a></p>
+    <p><a href="javascript:history.back()">Kembali</a> · <a href="{{ url('/') }}">Beranda</a></p>
 </div>
 <script>
 (function () {
