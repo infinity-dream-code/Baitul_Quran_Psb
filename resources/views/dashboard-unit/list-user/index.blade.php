@@ -44,10 +44,10 @@
         </select>
 
         <select name="gelombang_id" class="px-3 py-2 border rounded-lg" onchange="this.form.submit()">
-            <option value="">--Pilih Gelombang--</option>
+            <option value="">--Pilih Tahap--</option>
             @foreach($gelombangList as $gel)
                 <option value="{{ $gel->id }}" {{ $idGelombang == $gel->id ? 'selected' : '' }}>
-                    Gelombang {{ $gel->gelombang }}
+                    Tahap {{ $gel->gelombang }}
                     ({{ \Carbon\Carbon::parse($gel->start)->format('d M Y') }} -
                      {{ \Carbon\Carbon::parse($gel->end)->format('d M Y') }})
                 </option>

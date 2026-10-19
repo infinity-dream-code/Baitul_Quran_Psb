@@ -55,7 +55,7 @@ class RegisterController extends Controller
     if (!$masterHarga) {
         return back()
             ->withInput()
-            ->withErrors(['id_fakultas' => 'Biaya pendaftaran untuk jalur, gelombang, dan sekolah yang dipilih belum diatur. Silakan hubungi panitia.']);
+            ->withErrors(['id_fakultas' => 'Biaya pendaftaran untuk jalur, tahap, dan sekolah yang dipilih belum diatur. Silakan hubungi panitia.']);
     }
 
    $noDaftar = DataPeserta::generateNoPendaftaran($request->id_gelombang);

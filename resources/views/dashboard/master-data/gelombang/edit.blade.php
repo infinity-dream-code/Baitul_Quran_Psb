@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-6">
-    <h1 class="text-xl font-bold text-gray-800 mb-4">Edit Gelombang</h1>
+    <h1 class="text-xl font-bold text-gray-800 mb-4">Edit Tahap</h1>
 
     <form action="{{ route('master.gelombang.update', $gelombang->id) }}" method="POST" class="bg-white shadow rounded-lg p-6">
         @csrf

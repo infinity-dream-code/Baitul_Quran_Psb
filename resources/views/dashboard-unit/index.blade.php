@@ -15,9 +15,9 @@
         </span>
         <span class="ml-2 text-green-500 text-xs lg:text-sm font-medium"></span>
     </div>
-    <p class="text-gray-600 text-xs lg:text-sm leading-tight">Total Siswa Mendaftar</p>
+    <p class="text-gray-600 text-xs lg:text-sm leading-tight">Total Santri Mendaftar</p>
     @if($activeGelombang)
-        <p class="text-xs text-blue-600">Gelombang {{ $activeGelombang->gelombang }}</p>
+        <p class="text-xs text-blue-600">Tahap {{ $activeGelombang->gelombang }}</p>
     @endif
 </div>
 
@@ -36,7 +36,7 @@
                     </div>
                     <p class="text-gray-600 text-xs lg:text-sm leading-tight">Total Membayar Pendaftaran</p>
                 @if($activeGelombang)
-        <p class="text-xs text-blue-600">Gelombang {{ $activeGelombang->gelombang }}</p>
+        <p class="text-xs text-blue-600">Tahap {{ $activeGelombang->gelombang }}</p>
     @endif
                 </div>
             </div>
@@ -60,9 +60,9 @@
                             @endif
                         </div>
                     </div>
-                    <p class="text-gray-600 text-xs lg:text-sm leading-tight">Total Siswa di Nyatakan Lulus</p>
+                    <p class="text-gray-600 text-xs lg:text-sm leading-tight">Total Santri di Nyatakan Lulus</p>
                 @if($activeGelombang)
-        <p class="text-xs text-blue-600">Gelombang {{ $activeGelombang->gelombang }}</p>
+        <p class="text-xs text-blue-600">Tahap {{ $activeGelombang->gelombang }}</p>
     @endif
                 </div>
             </div>
@@ -78,9 +78,9 @@
                         <span class="text-2xl lg:text-3xl font-bold text-gray-800">{{ $stats['total_registrasi'] }}</span>
                         <span class="ml-2 text-gray-400 text-xs lg:text-sm font-medium">{{ $stats['percent_registrasi'] }}%</span>
                     </div>
-                    <p class="text-gray-600 text-xs lg:text-sm leading-tight">Total Siswa Lunas Registrasi Daful</p>
+                    <p class="text-gray-600 text-xs lg:text-sm leading-tight">Total Santri Lunas Registrasi Daful</p>
                @if($activeGelombang)
-        <p class="text-xs text-blue-600">Gelombang {{ $activeGelombang->gelombang }}</p>
+        <p class="text-xs text-blue-600">Tahap {{ $activeGelombang->gelombang }}</p>
     @endif
                 </div>
             </div>

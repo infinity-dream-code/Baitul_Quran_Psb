@@ -12,7 +12,7 @@
                 <tr>
                     <th class="px-4 py-3">#</th>
                     <th class="px-4 py-3">Nama Jalur</th>
-                    <th class="px-4 py-3">Gelombang</th>
+                    <th class="px-4 py-3">Tahap</th>
                     <th class="px-4 py-3">Sekolah</th>
                     <th class="px-4 py-3">Jurusan</th>
                     <th class="px-4 py-3">Biaya Registrasi</th>
@@ -26,7 +26,7 @@
                 <tr class="hover:bg-gray-50 transition" data-jalur="{{ $mh->nama_jalur }}" data-prodi="{{ $mh->nama_prodi }}">
                     <td class="px-4 py-3">{{ $index+1 }}</td>
                     <td class="px-4 py-3 font-medium">{{ $mh->nama_jalur }}</td>
-                    <td class="px-4 py-3">Gelombang {{ $mh->nama_gelombang }}</td>
+                    <td class="px-4 py-3">Tahap {{ $mh->nama_gelombang }}</td>
                     <td class="px-4 py-3">{{ $mh->nama_fakultas }}</td>
                     <td class="px-4 py-3">{{ $mh->nama_prodi }}</td>
                     <td class="px-4 py-3">Rp {{ number_format($mh->harga_final, 0, ',', '.') }}</td>

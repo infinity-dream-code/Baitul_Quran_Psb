@@ -284,7 +284,7 @@
  <div class="logo"><img src="{{ asset(config('client.logo')) }}" alt="#"></div>
             
             <div class="school-info">
-                <div class="school-title">PENERIMAAN SISWA BARU</div>
+                <div class="school-title">PENERIMAAN SANTRI BARU</div>
                 <div class="school-year">{{ $peserta->fakultas ?? '-' }} {{ $peserta->relasiGelombang->tahun_akademik ?? '-' }}</div>
             </div>
         </div>
@@ -383,14 +383,14 @@
             <div class="form-title">FORMULIR</div>
             <div class="logo"></div>
             <div class="school-info">
-                <div class="school-title">PENERIMAAN SISWA BARU</div>
+                <div class="school-title">PENERIMAAN SANTRI BARU</div>
                 <div class="school-year">PSB {{ $peserta->fakultas ?? '-' }} {{ $peserta->gelombang ?? '-' }}</div>
             </div>
         </div>
         <div class="section cost-section">
             <div class="section-title">Rincian Biaya Daftar Ulang (Jika diterima)</div>
             <table class="cost-table">
-                <thead><tr><th class="number-col">#</th><th>Biaya Masuk Siswa Baru</th><th class="amount-col">Nominal</th><th>Keterangan</th></tr></thead>
+                <thead><tr><th class="number-col">#</th><th>Biaya Masuk Santri Baru</th><th class="amount-col">Nominal</th><th>Keterangan</th></tr></thead>
                <tbody>
     @php $total=0; @endphp
     @foreach($detailBiaya as $i => $row)

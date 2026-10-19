@@ -41,7 +41,7 @@ public function store(Request $request)
 
     if ($next > 10) {
         return redirect()->back()->withErrors([
-            'gelombang' => "Tahun {$tahun} sudah punya 10 gelombang, tidak bisa tambah lagi."
+            'gelombang' => "Tahun {$tahun} sudah punya 10 tahap, tidak bisa tambah lagi."
         ])->withInput();
     }
 
@@ -56,7 +56,7 @@ public function store(Request $request)
     ]);
 
     return redirect()->route('master.gelombang')
-        ->with('success', "Gelombang ke-{$next} untuk tahun {$tahun} berhasil ditambahkan");
+        ->with('success', "Tahap ke-{$next} untuk tahun {$tahun} berhasil ditambahkan");
 }
 
 
@@ -83,7 +83,7 @@ public function update(Request $request, $id)
     ]);
 
     return redirect()->route('master.gelombang')
-        ->with('success', "Gelombang ke-{$gelombang->gelombang} berhasil diperbarui");
+        ->with('success', "Tahap ke-{$gelombang->gelombang} berhasil diperbarui");
 }
 
 
@@ -94,12 +94,12 @@ public function update(Request $request, $id)
 
         if ($gelombang->harga()->exists()) {
             return redirect()->route('master.gelombang')
-                ->with('error', 'Gelombang tidak bisa dihapus karena sudah dipakai di Master Harga.');
+                ->with('error', 'Tahap tidak bisa dihapus karena sudah dipakai di Master Harga.');
         }
 
         $gelombang->delete();
 
         return redirect()->route('master.gelombang')
-            ->with('success', 'Gelombang berhasil dihapus.');
+            ->with('success', 'Tahap berhasil dihapus.');
     }
 }

@@ -19,13 +19,13 @@
             </div>
 
             <div>
-                <label class="block text-sm text-gray-700 mb-1">Gelombang</label>
+                <label class="block text-sm text-gray-700 mb-1">Tahap</label>
                 <select name="gelombang_id" id="gelombang" class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" {{ !$tahun ? 'disabled' : '' }}>
-                    <option value="">-- Semua Gelombang --</option>
+                    <option value="">-- Semua Tahap --</option>
                     @if($tahun)
                         @foreach($gelombangList as $g)
                             <option value="{{ $g->id }}" {{ $idGelombang == $g->id ? 'selected' : '' }}>
-                                Gelombang {{ $g->gelombang }} - {{ $g->tahun_akademik }}
+                                Tahap {{ $g->gelombang }} - {{ $g->tahun_akademik }}
                             </option>
                         @endforeach
                     @endif

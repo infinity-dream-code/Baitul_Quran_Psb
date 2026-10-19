@@ -3,7 +3,7 @@
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             {{-- Header --}}
             <div class="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-                <h1 class="text-xl font-semibold text-gray-800">Data Calon Siswa</h1>
+                <h1 class="text-xl font-semibold text-gray-800">Data Calon Santri</h1>
                
             </div>
 
@@ -197,9 +197,9 @@
                     {{-- Kolom Kanan - Photo dan Status --}}
                     <div class="lg:col-span-1">
                         <div class="text-center">
-                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Photo Siswa</h4>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Photo Santri</h4>
                             
-                            {{-- Foto Siswa --}}
+                            {{-- Foto Santri --}}
                             <div class="mb-6 flex justify-center">
                                 @if($peserta->foto)
                                   <img src="{{ asset(Storage::url($peserta->foto)) }}" 

@@ -15,10 +15,10 @@
         </select>
 
         <select name="gelombang_id" class="px-3 py-2 border rounded-lg" onchange="this.form.submit()">
-            <option value="">--Pilih Gelombang--</option>
+            <option value="">--Pilih Tahap--</option>
             @foreach($gelombangList as $gel)
                 <option value="{{ $gel->id }}" {{ $idGelombang == $gel->id ? 'selected' : '' }}>
-                    Gelombang {{ $gel->gelombang }} ({{ $gel->start->format('d M Y') }} - {{ $gel->end->format('d M Y') }})
+                    Tahap {{ $gel->gelombang }} ({{ $gel->start->format('d M Y') }} - {{ $gel->end->format('d M Y') }})
                 </option>
             @endforeach
         </select>

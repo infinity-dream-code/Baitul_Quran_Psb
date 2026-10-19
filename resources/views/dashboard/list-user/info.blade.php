@@ -53,12 +53,12 @@
           <div class="logo"><img src="{{ asset(config('client.logo')) }}" alt="Logo {{ config('client.name') }}"></div>
                 
             <div class="address">{{ config('client.region') }}</div>
-            <div class="school-title">PANITIA PENERIMAAN SISWA BARU PSB {{ $peserta->fakultas }}</div>
+            <div class="school-title">PANITIA PENERIMAAN SANTRI BARU PSB {{ $peserta->fakultas }}</div>
         </div>
         <div class="content">
             <div class="section-title">Informasi Akun Anda</div>
             <table class="info-table">
-                <tr><td class="label">Nama Calon Siswa</td><td class="value">{{ $peserta->nama_peserta }}</td></tr>
+                <tr><td class="label">Nama Calon Santri</td><td class="value">{{ $peserta->nama_peserta }}</td></tr>
                 <tr><td class="label">Nomor pendaftaran (Username)</td><td class="value">{{ $peserta->no_pendaftaran }}</td></tr>
                 <tr><td class="label">Password</td><td class="value">{{ $user->plain_password }}</td></tr>
                 <tr><td class="label">Virtual Akun</td><td class="value">{{ $peserta->va_number }}</td></tr>

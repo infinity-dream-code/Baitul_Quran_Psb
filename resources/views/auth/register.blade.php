@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Form Pendaftaran Siswa Baru - PSB {{ config('client.name') }}</title>
+    <title>Form Pendaftaran Santri Baru - PSB {{ config('client.name') }}</title>
     <link rel="icon" type="image/png" href="{{ asset(config('client.logo')) }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -121,7 +121,7 @@
             <div class="form-section mb-8 overflow-hidden">
                 <div class="section-header text-white px-8 py-8 text-center">
                     <h1 class="text-3xl font-bold mb-2">PSB {{ config('client.name') }}</h1>
-                    <p class="text-green-100 text-lg">Form Pendaftaran Siswa Baru</p>
+                    <p class="text-green-100 text-lg">Form Pendaftaran Santri Baru</p>
                     <div class="mt-4 w-20 h-1 bg-white/30 mx-auto rounded-full"></div>
                 </div>
             </div>
@@ -164,9 +164,9 @@
             </select>
         </div>
         <div>
-            <label class="block label-text mb-2">Gelombang <span class="required">*</span></label>
+            <label class="block label-text mb-2">Tahap <span class="required">*</span></label>
             <select name="id_gelombang" id="gelombang" required class="form-input" disabled>
-                <option value="">PILIH GELOMBANG</option>
+                <option value="">PILIH TAHAP</option>
             </select>
         </div>
                             </div>
@@ -192,7 +192,7 @@
                         
                         <div class="space-y-6">
                             <div>
-                                <label class="block label-text mb-2">Nama Calon Siswa <span class="required">*</span></label>
+                                <label class="block label-text mb-2">Nama Calon Santri <span class="required">*</span></label>
                                 <input type="text" name="nama" required placeholder="NAMA SESUAI DENGAN AKTA LAHIR" class="form-input">
                             </div>
 
@@ -459,13 +459,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (jalurSelect && gelombangSelect) {
         jalurSelect.addEventListener('change', function () {
             const jalurId = this.value;
-            resetSelect(gelombangSelect, 'PILIH GELOMBANG');
+            resetSelect(gelombangSelect, 'PILIH TAHAP');
             resetSelect(fakultasSelect, 'PILIH SEKOLAH');
             if (jalurId) {
                 fetch("{{ url('get-gelombang-by-jalur') }}/" + jalurId)
                 .then(res => res.json())
                 .then(data => {
-                    fillSelect(gelombangSelect, data, 'PILIH GELOMBANG', 'id_gelombang', 'nama_gelombang');
+                    fillSelect(gelombangSelect, data, 'PILIH TAHAP', 'id_gelombang', 'nama_gelombang');
                 });
             }
         });

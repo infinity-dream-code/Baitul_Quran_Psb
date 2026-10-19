@@ -181,7 +181,7 @@ public function updatepeserta(Request $request, $id)
         $peserta->prodi     = $prodi?->nama;
 
         $peserta->saveQuietly();
-        $message = 'Data peserta (termasuk jalur, gelombang, fakultas, dan prodi) berhasil diperbarui.';
+        $message = 'Data peserta (termasuk jalur, tahap, fakultas, dan prodi) berhasil diperbarui.';
     } else {
         $peserta->save();
         $message = 'Nama dan nomor HP peserta berhasil diperbarui.';
@@ -219,7 +219,7 @@ public function editpeserta($id)
             ->map(function ($row) {
                 return [
                     'id_gelombang' => $row->gelombang->id,
-                    'nama_gelombang' => $row->gelombang->gelombang . ' - ' . $row->gelombang->tahun_akademik,
+                    'nama_gelombang' => 'Tahap ' . $row->gelombang->gelombang . ' - ' . $row->gelombang->tahun_akademik,
                 ];
             });
     }
@@ -297,7 +297,7 @@ public function editpeserta1($role, $id)
             ->map(function ($row) {
                 return [
                     'id_gelombang' => $row->gelombang->id,
-                    'nama_gelombang' => $row->gelombang->gelombang . ' - ' . $row->gelombang->tahun_akademik,
+                    'nama_gelombang' => 'Tahap ' . $row->gelombang->gelombang . ' - ' . $row->gelombang->tahun_akademik,
                 ];
             });
     }
@@ -396,7 +396,7 @@ public function updatepeserta1(Request $request, $role, $id)
         $peserta->prodi     = $prodi?->nama;
 
         $peserta->saveQuietly();
-        $message = 'Data peserta (termasuk jalur, gelombang, fakultas, dan prodi) berhasil diperbarui.';
+        $message = 'Data peserta (termasuk jalur, tahap, fakultas, dan prodi) berhasil diperbarui.';
     } else {
         $peserta->save();
         $message = 'Nama dan nomor HP peserta berhasil diperbarui.';
@@ -422,7 +422,7 @@ public function updatepeserta1(Request $request, $role, $id)
             ->map(function ($row) {
                 return [
                     'id_gelombang' => $row->gelombang->id,
-                    'nama_gelombang' => $row->gelombang->gelombang . ' - ' . $row->gelombang->tahun_akademik,
+                    'nama_gelombang' => 'Tahap ' . $row->gelombang->gelombang . ' - ' . $row->gelombang->tahun_akademik,
                 ];
             });
 

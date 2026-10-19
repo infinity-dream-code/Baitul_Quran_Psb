@@ -36,14 +36,14 @@
     <h3 class="text-4xl font-extrabold text-yellow-400 mb-1 tracking-wide">PSB {{ config('client.name') }}</h3>
     <p class="text-gray-300 text-base mb-5">{{ config('client.region') }}</p>
     <p class="text-gray-300 text-lg leading-relaxed mb-6">
-        Sistem PSB (Penerimaan Siswa Baru) adalah platform digital yang memudahkan calon siswa untuk melakukan pendaftaran dan memantau status pendaftaran hingga kelulusan secara online.
+        Sistem PSB (Penerimaan Santri Baru) adalah platform digital yang memudahkan calon santri untuk melakukan pendaftaran dan memantau status pendaftaran hingga kelulusan secara online.
     </p>
     <ul class="space-y-4 text-gray-200 text-base">
         <li class="flex items-start">
             <span class="text-yellow-400 font-semibold mr-2">1.</span>
             <div>
                 <span class="font-semibold text-white">Terintegrasi dengan Payment Gateway Bank</span><br>
-                Siswa yang mendaftar langsung mendapatkan nominal pembayaran secara online dan dapat melakukan transaksi melalui nomor VA di berbagai channel bank.
+                Santri yang mendaftar langsung mendapatkan nominal pembayaran secara online dan dapat melakukan transaksi melalui nomor VA di berbagai channel bank.
             </div>
         </li>
         <li class="flex items-start">

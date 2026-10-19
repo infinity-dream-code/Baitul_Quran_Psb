@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>PSB {{ config('client.name') }} - Penerimaan Siswa Baru 2025/2026</title>
+    <title>PSB {{ config('client.name') }} - Penerimaan Santri Baru 2025/2026</title>
     <link rel="icon" type="image/png" href="{{ asset(config('client.logo')) }}">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -257,13 +257,13 @@
                     <div>
                         <div class="text-pmb-green-600 font-semibold mb-4 text-lg text-right">Tanggal</div>
                         <h2 class="text-4xl font-bold text-pmb-green-800 mb-10 text-right leading-tight">
-                            Penerimaan<br>Siswa<br>Baru
+                            Penerimaan<br>Santri<br>Baru
                         </h2>
                         
                      <div class="space-y-6">
     @forelse($gelombangTahunIni as $g)
         <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow">
-            <div class="font-bold text-gray-800 text-lg mb-2">Gelombang {{ $g->gelombang }}</div>
+            <div class="font-bold text-gray-800 text-lg mb-2">Tahap {{ $g->gelombang }}</div>
             <div class="text-gray-600">
                 {{ \Carbon\Carbon::parse($g->start)->format('d F Y') }}
                 -
@@ -272,7 +272,7 @@
         </div>
     @empty
         <div class="p-6 bg-yellow-100 rounded-xl text-yellow-800">
-            Belum ada gelombang di tahun ini.
+            Belum ada tahap di tahun ini.
         </div>
     @endforelse
 </div>

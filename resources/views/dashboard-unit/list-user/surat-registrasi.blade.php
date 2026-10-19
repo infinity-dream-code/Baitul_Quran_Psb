@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surat Keputusan Penerimaan Siswa Baru - PSB {{ $peserta->fakultas }}</title>
+    <title>Surat Keputusan Penerimaan Santri Baru - PSB {{ $peserta->fakultas }}</title>
     <style>
         body {
             font-family: 'Times New Roman', serif;
@@ -213,7 +213,7 @@
             <div class="header">
                 <div class="logo"><img src="{{ asset(config('client.logo')) }}" alt="Logo {{ config('client.name') }}"></div>
                 <div class="school-info">
-                    <div class="school-title">PANITIA PENERIMAAN SISWA BARU (PSB)</div>
+                    <div class="school-title">PANITIA PENERIMAAN SANTRI BARU (PSB)</div>
                     <div class="school-name">{{ $peserta->fakultas }}</div>
                     <div class="address">{{ config('client.region') }}</div>
                     <div class="website-email">Website : {{ url('/') }} || Email :</div>
@@ -222,7 +222,7 @@
             
             <div class="document-title">
                 <div class="doc-type">SURAT KEPUTUSAN</div>
-                <div class="doc-type" style="text-decoration: none;">PANITIA PENERIMAAN SISWA BARU (PSB)</div>
+                <div class="doc-type" style="text-decoration: none;">PANITIA PENERIMAAN SANTRI BARU (PSB)</div>
                 <div class="doc-detail">{{ $peserta->fakultas }}</div>
             </div>
             
@@ -241,7 +241,7 @@
                     <tr>
                         <td class="label">Kepada Yth.</td>
                         <td class="colon">:</td>
-                        <td class="value">Sdr. Calon Siswa Baru</td>
+                        <td class="value">Sdr. Calon Santri Baru</td>
                     </tr>
                     <tr>
                         <td class="label"></td>
@@ -287,8 +287,8 @@
                     <div style="min-width:80px; font-weight:bold;">Pertama</div>
                     <div style="min-width:10px;">:</div>
                     <div style="flex:1; text-align:justify;">
-                        Peserta Penerimaan Siswa Baru PSB {{ $peserta->fakultas }} melalui seleksi test tahun akademik 
-                        {{ $tahun_akademik }} dinyatakan <strong>{{ $peserta->status_ujian }}</strong> sebagai Siswa Baru PSB {{ $peserta->fakultas }}
+                        Peserta Penerimaan Santri Baru PSB {{ $peserta->fakultas }} melalui seleksi test tahun akademik 
+                        {{ $tahun_akademik }} dinyatakan <strong>{{ $peserta->status_ujian }}</strong> sebagai Santri Baru PSB {{ $peserta->fakultas }}
                         sebagaimana tercantum dalam surat keputusan ini.
                     </div>
                 </div>
@@ -345,7 +345,7 @@
             <div class="signature-section">
                 <div class="signature-left">
                     <div>Ttd</div>
-                    <div>Calon Siswa</div>
+                    <div>Calon Santri</div>
                 </div>
                 <div class="signature-right">
                     <div>Padang, {{ $tanggalSekarang }}</div>

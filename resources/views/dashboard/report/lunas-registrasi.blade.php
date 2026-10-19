@@ -16,7 +16,7 @@
         <select name="gelombang_id" class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
             @foreach($gelombangList as $g)
                 <option value="{{ $g->id }}" {{ $gelombangId == $g->id ? 'selected' : '' }}>
-                    Gelombang {{ $g->gelombang }}
+                    Tahap {{ $g->gelombang }}
                     ({{ \Carbon\Carbon::parse($g->start)->format('d M Y') }} -
                      {{ \Carbon\Carbon::parse($g->end)->format('d M Y') }})
                 </option>

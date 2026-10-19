@@ -212,7 +212,7 @@ public function update(Request $request, $id)
     if ($exists) {
         return redirect()->back()
             ->withInput()
-            ->with('error', 'Data dengan kombinasi Jalur, Gelombang, Fakultas, dan Prodi tersebut sudah ada di Master Harga. Silakan periksa kembali.');
+            ->with('error', 'Data dengan kombinasi Jalur, Tahap, Fakultas, dan Prodi tersebut sudah ada di Master Harga. Silakan periksa kembali.');
     }
 
     $masterHarga = MasterHarga::findOrFail($id);
@@ -376,7 +376,7 @@ public function update1(Request $request, $role, $id)
     if ($exists) {
         return redirect()->back()
             ->withInput()
-            ->with('error', 'Data dengan kombinasi Jalur, Gelombang, Fakultas, dan Prodi tersebut sudah ada di Master Harga. Silakan periksa kembali.');
+            ->with('error', 'Data dengan kombinasi Jalur, Tahap, Fakultas, dan Prodi tersebut sudah ada di Master Harga. Silakan periksa kembali.');
     }
 
     $masterHarga = MasterHarga::findOrFail($id);

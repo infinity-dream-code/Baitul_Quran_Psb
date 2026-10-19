@@ -2,13 +2,13 @@
 
 @section('content')
 <div id="gelombang" class="tab-content opacity-100 transition-opacity duration-300 p-4">
-    <h3 class="text-lg font-semibold mb-6">Set Gelombang Pendaftaran</h3>
+    <h3 class="text-lg font-semibold mb-6">Set Tahap Pendaftaran</h3>
     <div class="overflow-x-auto bg-white shadow rounded-lg">
         <table class="min-w-full border border-gray-200 rounded-lg">
             <thead class="bg-green-600 text-white">
                 <tr>
                     <th class="px-4 py-3 text-left text-xs font-semibold uppercase">#</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Gelombang</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Tahap</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Tahun Akademik</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold uppercase">Pengumuman</th>
                     <th class="px-4 py-3 text-center text-xs font-semibold uppercase">Aktifkan</th>
@@ -18,7 +18,7 @@
                 @foreach($gelombangs as $i => $g)
                 <tr class="{{ $i % 2 == 0 ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100">
                     <td class="px-4 py-3 text-sm text-gray-700">{{ $i+1 }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700 font-medium">Gelombang {{ $g->gelombang }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700 font-medium">Tahap {{ $g->gelombang }}</td>
                     <td class="px-4 py-3 text-sm text-gray-700">{{ $g->tahun }}</td>
                     <td class="px-4 py-3 text-sm text-gray-700">{{ $g->pengumuman->format('d-m-Y') }}</td>
                     <td class="px-4 py-3 text-center">

@@ -43,7 +43,7 @@
 </td>
 
     <td style="border:none; text-align:left; padding-top:5px; padding-left:20px;">
-        <div style="font-size:20px; font-weight:bold;">PENERIMAAN SISWA BARU</div>
+        <div style="font-size:20px; font-weight:bold;">PENERIMAAN SANTRI BARU</div>
         <div style="font-size:15px; font-weight:bold;">
             PSB {{ $peserta->fakultas }} {{ $peserta->relasiGelombang->tahun_akademik ?? '-' }}<br>
             No. Pendaftaran {{ $peserta->no_pendaftaran }}

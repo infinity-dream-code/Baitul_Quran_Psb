@@ -356,6 +356,8 @@ Route::delete('PmbMstPendaftarans/master-ujian/{id}', [MasterUjianController::cl
 Route::get('/PmbMstPendaftarans/master-tahun-akademik', [MasterAkademikController::class, 'index'])->name('master.tahun_akademik');
 Route::get('/PmbMstPendaftarans/master-tahun-akademik/add', [MasterAkademikController::class, 'create'])->name('master.tahun_akademik.add');
 Route::post('/PmbMstPendaftarans/master-tahun-akademik/store', [MasterAkademikController::class, 'store'])->name('master.tahun_akademik.store');
+Route::get('/PmbMstPendaftarans/master-tahun-akademik/edit/{id}', [MasterAkademikController::class, 'edit'])->name('master.tahun_akademik.edit');
+Route::put('/PmbMstPendaftarans/master-tahun-akademik/update/{id}', [MasterAkademikController::class, 'update'])->name('master.tahun_akademik.update');
 Route::delete('/PmbMstPendaftarans/master-tahun-akademik/delete/{id}', [MasterAkademikController::class, 'destroy'])->name('master.tahun_akademik.delete');
 
 Route::get('/PmbMstPendaftarans/master-gelombang', [MasterGelombangController::class, 'index'])->name('master.gelombang');

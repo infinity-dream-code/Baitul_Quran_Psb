@@ -99,7 +99,7 @@ class PesertaRegistrasiExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'No','No Pendaftaran','Gelombang','Jalur','Sekolah Di Tuju','Jurusan','Nama Peserta',
+            'No','No Pendaftaran','Tahap','Jalur','Sekolah Di Tuju','Jurusan','Nama Peserta',
             'NIK','Tempat Lahir','Tanggal Lahir','NISN','No Akta Lahir','Gender','Agama',
             'Kewarganegaraan','Email','No HP','Alamat Lengkap','Alamat Sekolah','Dusun',
             'Kecamatan','Kabupaten','Provinsi','Kode Pos','Nama Sekolah','Kota Sekolah',

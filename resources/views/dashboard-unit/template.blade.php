@@ -264,19 +264,19 @@
     <a href="{{ url('PmbMstPendaftarans/siswa-per-provinsi/' . str_replace(' ', '-', ($role ?? 'admin'))) }}"
        class="submenu-item block px-12 py-2 hover:bg-green-800"
        data-submenu="siswa-per-provinsi">
-       Siswa Per Provinsi
+       Santri Per Provinsi
     </a>
 
     <a href="{{ url('PmbMstPendaftarans/siswa-per-kota/' . str_replace(' ', '-', ($role ?? 'admin'))) }}"
        class="submenu-item block px-12 py-2 hover:bg-green-800"
        data-submenu="siswa-per-kota">
-       Siswa Per Kota
+       Santri Per Kota
     </a>
 
     <a href="{{ url('PmbMstPendaftarans/siswa-per-sekolah/' . str_replace(' ', '-', ($role ?? 'admin'))) }}"
        class="submenu-item block px-12 py-2 hover:bg-green-800"
        data-submenu="siswa-per-sekolah">
-       Siswa Per Sekolah Asal
+       Santri Per Sekolah Asal
     </a>
 
     <a href="{{ url('PmbMstPendaftarans/export-detail-biaya/' . str_replace(' ', '-', ($role ?? 'admin'))) }}"

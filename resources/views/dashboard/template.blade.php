@@ -138,7 +138,7 @@
                             </button>
                             <div id="masterdata-dropdown" class="dropdown-content bg-green-700">
                                <a href="{{ url('/PmbMstPendaftarans/master-tahun-akademik') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Tahun Akademik</a>
-<a href="{{ url('/PmbMstPendaftarans/master-gelombang') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Gelombang</a>
+<a href="{{ url('/PmbMstPendaftarans/master-gelombang') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Tahap</a>
 <a href="{{ url('/PmbMstPendaftarans/master-jalur') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Jalur</a>
 <a href="{{ url('/PmbMstPendaftarans/master-unit') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Sekolah</a><a href="{{ url('/PmbMstPendaftarans/master-ujian') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Ujian</a>
 <a href="{{ url('/PmbMstPendaftarans/master-ruang') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Ruang</a>
@@ -155,7 +155,7 @@
         <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
     </button>
     <div id="psb-dropdown" class="dropdown-content bg-green-700">
-        <a href="{{ url('/PmbMstPendaftarans/setting-gelombang') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">Gelombang PSB</a>
+        <a href="{{ url('/PmbMstPendaftarans/setting-gelombang') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">Tahap PSB</a>
         <a href="{{ url('/PmbMstPendaftarans/setting-harga') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">Master Harga</a>
         <a href="{{ url('/PmbMstPendaftarans/setting-pendaftaran') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">On/Off Pendaftaran</a>
         <a href="{{ url('/PmbMstPendaftarans/setting-slider') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">Image Slider</a>
@@ -253,8 +253,8 @@
                                 <a href="{{ route('report.rekapJumlahPendaftar') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Rekap Jumlah Pendaftar</a>
                                 <a href="{{ route('report.rekapLunasPendaftaran') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Rekap Lunas Registrasi</a>
                                 <a href="{{ route('report.rekapLunasRegistrasi') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Rekap Lunas Registrasi Daftar Ulang</a>
-                                <a href="{{ route('report.siswaProvinsi') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Siswa Per Provinsi</a>
-                                <a href="{{ route('report.siswaKota') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Siswa Per Kota</a>                                <a href="{{ route('report.siswaSekolah') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Siswa Per Sekolah Asal</a>
+                                <a href="{{ route('report.siswaProvinsi') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Santri Per Provinsi</a>
+                                <a href="{{ route('report.siswaKota') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Santri Per Kota</a>                                <a href="{{ route('report.siswaSekolah') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Santri Per Sekolah Asal</a>
                                 <a href="{{ route('report.exportDetailBiaya') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Export Detail Biaya</a>
                                 <a href="{{ route('report.exportAll') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Export All</a>
                             </div>
