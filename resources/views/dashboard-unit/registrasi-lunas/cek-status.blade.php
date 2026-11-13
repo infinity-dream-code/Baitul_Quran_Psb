@@ -40,64 +40,67 @@
             </select>
 
             <div class="relative">
-                <input type="text" id="liveSearchInput" value="{{ request('search') }}"
+                <input type="text" id="liveSearchInput" name="search" value="{{ request('search') }}"
                     class="w-64 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     placeholder="Cari nama, VA, Jurusan, Sekolah...">
-                <input type="hidden" name="search" id="searchHidden">
             </div>
 
             <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Cari</button>
         </form>
+    </div>
 
-        <form id="cekStatusForm" action="{{ route('registrasi.cekStatus1') }}" method="POST" class="ml-auto">
-            @csrf
-            <input type="hidden" name="no_pendaftaran" id="selectedNoPendaftaran">
+    <form id="cekStatusForm" action="{{ route('registrasi.cekStatus1') }}" method="POST">
+        @csrf
+        <div class="mb-4 flex justify-end">
             <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Cek Status</button>
-        </form>
-    </div>
+        </div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full border-collapse border border-gray-300 text-sm" id="pesertaTable">
-            <thead class="bg-gray-100 text-gray-700">
-                <tr>
-                    <th class="border px-3 py-2">#</th>
-                    <th class="border px-3 py-2">Nama</th>
-                    <th class="border px-3 py-2">No. Pend (VA)</th>
-                    <th class="border px-3 py-2">Sekolah</th>
-                    <th class="border px-3 py-2">Jurusan</th>
-                    <th class="border px-3 py-2">Jalur</th>
-                    <th class="border px-3 py-2">Status Daful</th>
-                    <th class="border px-3 py-2"><input type="checkbox" id="checkAll"></th>
-                </tr>
-            </thead>
-            <tbody id="pesertaTbody">
-                @forelse($pesertaList as $i => $peserta)
-                    <tr class="hover:bg-gray-50">
-                        <td class="border px-3 py-2">{{ $pesertaList->firstItem() + $i }}</td>
-                        <td class="border px-3 py-2" data-col="nama">{{ $peserta->nama_peserta }}</td>
-                        <td class="border px-3 py-2" data-col="va">{{ $peserta->no_pendaftaran ?? '-' }}</td>
-                        <td class="border px-3 py-2" data-col="fak">{{ $peserta->fakultas ?? '-' }}</td>
-                        <td class="border px-3 py-2" data-col="prodi">{{ $peserta->prodi ?? '-' }}</td>
-                        <td class="border px-3 py-2" data-col="jalur">{{ $peserta->jalur ?? '-' }}</td>
-                        <td class="border px-3 py-2 text-center">
-                            @if($peserta->status_pembayaran_registrasi == 1)
-                                <span class="text-green-600 font-bold">✔</span>
-                            @else
-                                <span class="text-red-600 font-bold">✘</span>
-                            @endif
-                        </td>
-                        <td class="border px-3 py-2 text-center">
-                            <input type="checkbox" class="checkItem" value="{{ $peserta->no_pendaftaran }}">
-                        </td>
-                    </tr>
-                @empty
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse border border-gray-300 text-sm" id="pesertaTable">
+                <thead class="bg-gray-100 text-gray-700">
                     <tr>
-                        <td colspan="8" class="text-center py-4">Tidak ada data</td>
+                        <th class="border px-3 py-2">#</th>
+                        <th class="border px-3 py-2">Nama</th>
+                        <th class="border px-3 py-2">No. Pend (VA)</th>
+                        <th class="border px-3 py-2">Sekolah</th>
+                        <th class="border px-3 py-2">Jurusan</th>
+                        <th class="border px-3 py-2">Jalur</th>
+                        <th class="border px-3 py-2">Status Daful</th>
+                        <th class="border px-3 py-2"><input type="checkbox" id="checkAll"></th>
                     </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody id="pesertaTbody">
+                    @forelse($pesertaList as $i => $peserta)
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-3 py-2">{{ $pesertaList->firstItem() + $i }}</td>
+                            <td class="border px-3 py-2" data-col="nama">{{ $peserta->nama_peserta }}</td>
+                            <td class="border px-3 py-2" data-col="va">{{ $peserta->no_pendaftaran ?? '-' }}</td>
+                            <td class="border px-3 py-2" data-col="fak">{{ $peserta->fakultas ?? '-' }}</td>
+                            <td class="border px-3 py-2" data-col="prodi">{{ $peserta->prodi ?? '-' }}</td>
+                            <td class="border px-3 py-2" data-col="jalur">{{ $peserta->jalur ?? '-' }}</td>
+                            <td class="border px-3 py-2 text-center">
+                                @if($peserta->status_pembayaran_registrasi == 1)
+                                    <span class="text-green-600 font-bold">✔</span>
+                                @else
+                                    <span class="text-red-600 font-bold">✘</span>
+                                @endif
+                            </td>
+                            <td class="border px-3 py-2 text-center">
+                                <input type="checkbox"
+                                    class="checkItem"
+                                    name="no_pendaftaran[]"
+                                    value="{{ $peserta->no_pendaftaran }}">
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-4">Tidak ada data</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </form>
 
     <div class="mt-4" id="paginationWrap">
         {{ $pesertaList->links() }}
@@ -105,10 +108,14 @@
 </div>
 
 <script>
+(function () {
     const input = document.getElementById('liveSearchInput');
     const tbody = document.getElementById('pesertaTbody');
+    const checkAll = document.getElementById('checkAll');
+    const form = document.getElementById('cekStatusForm');
+    if (!tbody || !form) return;
+
     const rows = Array.from(tbody.querySelectorAll('tr'));
-    const searchHidden = document.getElementById('searchHidden');
 
     function normalize(s){
         return (s || '').toString().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
@@ -126,42 +133,35 @@
         return cols.includes(q);
     }
 
-    let debounceTimer;
-    input.addEventListener('input', function(){
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const q = normalize(input.value.trim());
-            rows.forEach(tr => {
-                tr.style.display = matchRow(tr, q) ? '' : 'none';
+    if (input) {
+        let debounceTimer;
+        input.addEventListener('input', function(){
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const q = normalize(input.value.trim());
+                rows.forEach(tr => {
+                    tr.style.display = matchRow(tr, q) ? '' : 'none';
+                });
+            }, 150);
+        });
+    }
+
+    if (checkAll) {
+        checkAll.addEventListener('change', function() {
+            document.querySelectorAll('.checkItem').forEach(cb => {
+                if (cb.closest('tr').style.display !== 'none') cb.checked = this.checked;
             });
-            searchHidden.value = input.value;
-        }, 150);
-    });
-
-    input.addEventListener('keydown', function(e){
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('filterForm').submit();
-        }
-    });
-
-    document.getElementById('checkAll').addEventListener('change', function() {
-        document.querySelectorAll('.checkItem').forEach(cb => {
-            if (cb.closest('tr').style.display !== 'none') cb.checked = this.checked;
         });
-    });
+    }
 
-    document.getElementById('cekStatusForm').addEventListener('submit', function(e) {
-        const selected = [];
-        document.querySelectorAll('.checkItem:checked').forEach(cb => {
-            if (cb.closest('tr').style.display !== 'none') selected.push(cb.value);
-        });
+    form.addEventListener('submit', function(e) {
+        const selected = Array.from(document.querySelectorAll('.checkItem:checked'))
+            .filter(cb => cb.closest('tr').style.display !== 'none');
         if (selected.length === 0) {
             e.preventDefault();
             alert('Pilih minimal satu peserta terlebih dahulu');
-            return;
         }
-        document.getElementById('selectedNoPendaftaran').value = JSON.stringify(selected);
     });
+})();
 </script>
 @endsection

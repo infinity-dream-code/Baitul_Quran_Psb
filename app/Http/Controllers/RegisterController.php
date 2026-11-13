@@ -279,7 +279,15 @@ public function cekStatusRegis(Request $request)
 
 public function cekStatus(Request $request)
 {
-    $noPendaftaranList = json_decode($request->no_pendaftaran, true) ?? [];
+    $raw = $request->input('no_pendaftaran');
+    if (is_array($raw)) {
+        $noPendaftaranList = array_values(array_filter($raw));
+    } elseif (is_string($raw) && $raw !== '') {
+        $decoded = json_decode($raw, true);
+        $noPendaftaranList = is_array($decoded) ? $decoded : [$raw];
+    } else {
+        $noPendaftaranList = [];
+    }
 
     if (empty($noPendaftaranList)) {
         return back()->with('error', 'Pilih minimal satu peserta');
@@ -347,7 +355,15 @@ public function cekStatus(Request $request)
 
 public function cekStatus1(Request $request)
 {
-    $noPendaftaranList = json_decode($request->no_pendaftaran, true) ?? [];
+    $raw = $request->input('no_pendaftaran');
+    if (is_array($raw)) {
+        $noPendaftaranList = array_values(array_filter($raw));
+    } elseif (is_string($raw) && $raw !== '') {
+        $decoded = json_decode($raw, true);
+        $noPendaftaranList = is_array($decoded) ? $decoded : [$raw];
+    } else {
+        $noPendaftaranList = [];
+    }
 
     if (empty($noPendaftaranList)) {
         return back()->with('error', 'Pilih minimal satu peserta');
