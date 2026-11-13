@@ -179,47 +179,20 @@ $peserta = DataPeserta::where('no_pendaftaran', $noDaftar)
 
 
     $jwtToken = JWT::encode($payload, $jwtKey, 'HS256');
-    $wsUrl = config('services.psb.ws_url');
-
-    \Log::info('WS CreateTagihan request', [
-        'ws_url' => $wsUrl,
-        'no_pendaftaran' => $peserta->no_pendaftaran,
-        'payload' => $payload,
-    ]);
 
     // Peserta sudah tersimpan; kalau WS tagihan down, halaman sukses tetap tampil dan tagihan dibuat ulang saat halaman dibuka lagi.
     $wsResponse = null;
     try {
         $response = Http::timeout(15)->connectTimeout(5)->withHeaders([
             'Content-Type' => 'application/json'
-        ])->post($wsUrl, [
+        ])->post(config('services.psb.ws_url'), [
             "token"  => $jwtToken,
             "method" => "CreateTagihan"
         ]);
-
+        \Log::info('WS CreateTagihan raw', [$response->body()]);
         $wsResponse = $response->json();
-        $body = $response->body();
-
-        \Log::info('WS CreateTagihan response', [
-            'http_status' => $response->status(),
-            'ok' => $response->successful(),
-            'ws_status' => $wsResponse['status'] ?? null,
-            'ws_message' => $wsResponse['message'] ?? null,
-            'body' => $body,
-        ]);
-
-        // Pesan generik 500 di index.php WS = file .env WS tidak ditemukan (loadEnv gagal)
-        if (($wsResponse['status'] ?? null) == 500
-            && str_contains((string) ($wsResponse['message'] ?? ''), 'Terjadi kesalahan pada server')
-        ) {
-            \Log::error('WS CreateTagihan: kemungkinan .env WS hilang/tidak terbaca', [
-                'ws_url' => $wsUrl,
-                'hint' => 'Cek file .env di folder WS_PSB_BAITUL_QURAN dan error.log WS',
-            ]);
-        }
     } catch (\Throwable $e) {
-        \Log::error('WS CreateTagihan gagal (exception)', [
-            'ws_url' => $wsUrl,
+        \Log::error('WS CreateTagihan gagal', [
             'no_pendaftaran' => $peserta->no_pendaftaran,
             'error' => $e->getMessage(),
         ]);

@@ -511,62 +511,103 @@ public function store(Request $request)
     private function fetchAkunsFromWs(string $context = 'master-harga'): array
     {
         $wsUrl = config('services.psb.ws_url');
-        $akuns = [];
+        $payload = [
+            'method' => 'getUAkun',
+            'token' => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4',
+        ];
 
-        Log::info('WS getUAkun request', [
+        Log::info('WS getUAkun REQUEST', [
             'context' => $context,
             'ws_url' => $wsUrl,
+            'payload' => $payload,
+            'app_url' => config('app.url'),
+            'time' => now()->toDateTimeString(),
         ]);
 
         if (!$wsUrl) {
-            Log::error('WS getUAkun: PSB_WS_URL kosong', ['context' => $context]);
+            Log::error('WS getUAkun: PSB_WS_URL kosong di .env', ['context' => $context]);
 
             return [];
         }
 
+        $started = microtime(true);
+
         try {
-            $client = new Client();
+            // http_errors=false: HTTP 500 tidak jadi exception, body tetap bisa dibaca utuh
+            $client = new Client([
+                'timeout' => 15,
+                'connect_timeout' => 5,
+                'http_errors' => false,
+            ]);
+
             $response = $client->post($wsUrl, [
-                'json' => [
-                    'method' => 'getUAkun',
-                    'token' => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4',
+                'json' => $payload,
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
                 ],
-                'timeout' => 10,
             ]);
 
-            $raw = (string) $response->getBody();
-            $body = json_decode($raw, true);
+            $elapsedMs = (int) round((microtime(true) - $started) * 1000);
             $httpStatus = $response->getStatusCode();
+            $raw = (string) $response->getBody();
+            $json = json_decode($raw, true);
+            $jsonError = json_last_error_msg();
 
-            Log::info('WS getUAkun response', [
-                'context' => $context,
-                'http_status' => $httpStatus,
-                'ws_status' => is_array($body) ? ($body['status'] ?? null) : null,
-                'ws_message' => is_array($body) ? ($body['message'] ?? null) : null,
-                'data_count' => (is_array($body) && isset($body['data']) && is_array($body['data']))
-                    ? count($body['data'])
-                    : 0,
-                'body_preview' => mb_substr($raw, 0, 500),
-            ]);
-
-            if (is_array($body) && isset($body['data']) && is_array($body['data'])) {
-                $akuns = $body['data'];
-            } elseif (is_array($body) && ($body['status'] ?? null) == 500) {
-                Log::error('WS getUAkun: response 500 (sering karena .env WS hilang)', [
-                    'context' => $context,
-                    'ws_url' => $wsUrl,
-                    'hint' => 'Cek .env dan error.log di folder WS_PSB_BAITUL_QURAN',
-                ]);
-            }
-        } catch (\Throwable $e) {
-            Log::error('WS getUAkun gagal (exception)', [
+            Log::info('WS getUAkun RESPONSE', [
                 'context' => $context,
                 'ws_url' => $wsUrl,
-                'error' => $e->getMessage(),
+                'elapsed_ms' => $elapsedMs,
+                'http_status' => $httpStatus,
+                'content_type' => $response->getHeaderLine('Content-Type'),
+                'json_ok' => is_array($json),
+                'json_error' => is_array($json) ? null : $jsonError,
+                'ws_status' => is_array($json) ? ($json['status'] ?? null) : null,
+                'ws_message' => is_array($json) ? ($json['message'] ?? null) : null,
+                'data_count' => (is_array($json) && isset($json['data']) && is_array($json['data']))
+                    ? count($json['data'])
+                    : 0,
+                'data_sample' => (is_array($json) && isset($json['data']) && is_array($json['data']))
+                    ? array_slice($json['data'], 0, 3)
+                    : null,
+                'body_full' => $raw,
+                'headers' => $response->getHeaders(),
             ]);
+
+            if (is_array($json) && isset($json['data']) && is_array($json['data'])) {
+                return $json['data'];
+            }
+
+            Log::error('WS getUAkun: tidak ada data akun', [
+                'context' => $context,
+                'http_status' => $httpStatus,
+                'ws_status' => is_array($json) ? ($json['status'] ?? null) : null,
+                'ws_message' => is_array($json) ? ($json['message'] ?? null) : null,
+                'hint' => ((is_array($json) && ($json['status'] ?? null) == 500)
+                    ? 'Pesan 500 generik di index.php WS = loadEnv gagal (.env tidak ketemu di __DIR__), ATAU fatal sebelum/sesudah itu. Cek: folder src+config lengkap, .env sejajar index.php, error.log WS.'
+                    : 'WS merespons tapi tanpa key data[]. Cek tabel u_akun di DB keuangan.'),
+            ]);
+        } catch (\Throwable $e) {
+            $elapsedMs = (int) round((microtime(true) - $started) * 1000);
+            $extra = [
+                'context' => $context,
+                'ws_url' => $wsUrl,
+                'elapsed_ms' => $elapsedMs,
+                'exception_class' => get_class($e),
+                'error' => $e->getMessage(),
+                'file' => $e->getFile() . ':' . $e->getLine(),
+            ];
+
+            if ($e instanceof RequestException && $e->hasResponse()) {
+                $resp = $e->getResponse();
+                $extra['http_status'] = $resp->getStatusCode();
+                $extra['body_full'] = (string) $resp->getBody();
+            }
+
+            Log::error('WS getUAkun EXCEPTION', $extra);
         }
 
-        return $akuns;
+        return [];
     }
 
 }
