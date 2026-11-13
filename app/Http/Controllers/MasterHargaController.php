@@ -77,21 +77,7 @@ public function create(Request $request)
         ->get();
     $fakultas = MasterFakultas::where('aktif', 1)->orderBy('fakultas')->get();
 
-    $akuns = [];
-    try {
-        $client = new Client();
-        $response = $client->post(config('services.psb.ws_url'), [
-            'json' => [
-                'method' => 'getUAkun',
-                'token'  => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4'
-            ],
-            'timeout' => 10
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
-        if (isset($body['data'])) {
-            $akuns = $body['data'];
-        }
-    } catch (\Exception $e) {}
+    $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
 
     $temporary = null;
     if ($request->filled(['id_jalur','id_fakultas','id_prodi'])) {
@@ -162,21 +148,7 @@ public function edit($id)
         ->orderBy('fakultas')
         ->get();
 
-    $akuns = [];
-    try {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post(config('services.psb.ws_url'), [
-            'json' => [
-                'method' => 'getUAkun',
-                'token'  => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4'
-            ],
-            'timeout' => 10
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
-        if (isset($body['data'])) {
-            $akuns = $body['data'];
-        }
-    } catch (\Exception $e) {}
+    $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
 
     return view('dashboard.settings.master-harga.edit', compact(
         'masterHarga',
@@ -224,21 +196,7 @@ public function update(Request $request, $id)
 
     $hargaFinal = (int) preg_replace('/[^0-9]/', '', $request->harga_final);
 
-    $akuns = [];
-    try {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post(config('services.psb.ws_url'), [
-            'json' => [
-                'method' => 'getUAkun',
-                'token'  => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4'
-            ],
-            'timeout' => 10
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
-        if (isset($body['data'])) {
-            $akuns = $body['data'];
-        }
-    } catch (\Exception $e) {}
+    $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
 
     $akunMap = [];
     foreach ($akuns as $akun) {
@@ -331,21 +289,7 @@ public function edit1($role, $id)
         ->orderBy('fakultas')
         ->get();
 
-    $akuns = [];
-    try {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post(config('services.psb.ws_url'), [
-            'json' => [
-                'method' => 'getUAkun',
-                'token'  => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4'
-            ],
-            'timeout' => 10
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
-        if (isset($body['data'])) {
-            $akuns = $body['data'];
-        }
-    } catch (\Exception $e) {}
+    $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
 
     return view('dashboard-unit.settings.master-harga.edit', compact(
         'masterHarga', 'jalurs', 'gelombangs', 'fakultas', 'akuns', 'menus', 'role'
@@ -388,21 +332,7 @@ public function update1(Request $request, $role, $id)
 
     $hargaFinal = (int) preg_replace('/[^0-9]/', '', $request->harga_final);
 
-    $akuns = [];
-    try {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post(config('services.psb.ws_url'), [
-            'json' => [
-                'method' => 'getUAkun',
-                'token'  => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4'
-            ],
-            'timeout' => 10
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
-        if (isset($body['data'])) {
-            $akuns = $body['data'];
-        }
-    } catch (\Exception $e) {}
+    $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
 
     $akunMap = [];
     foreach ($akuns as $akun) {
@@ -514,22 +444,7 @@ public function store(Request $request)
 
     $hargaFinal = preg_replace('/[^0-9]/', '', $request->harga_final);
 
-    $akuns = [];
-    try {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->post(config('services.psb.ws_url'), [
-            'json' => [
-                'method' => 'getUAkun',
-                'token'  => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4'
-            ],
-            'timeout' => 10
-        ]);
-        $body = json_decode($response->getBody()->getContents(), true);
-        if (isset($body['data']) && is_array($body['data'])) {
-            $akuns = $body['data'];
-        }
-    } catch (\Exception $e) {
-    }
+    $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
 
     $akunMap = [];
     foreach ($akuns as $akun) {
@@ -587,5 +502,71 @@ public function store(Request $request)
 
     return redirect('PmbMstPendaftarans/setting-harga')->with('success', 'Data berhasil disimpan');
 }
+
+    /**
+     * Ambil daftar akun dari WS (method getUAkun) untuk dropdown Master Harga.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function fetchAkunsFromWs(string $context = 'master-harga'): array
+    {
+        $wsUrl = config('services.psb.ws_url');
+        $akuns = [];
+
+        Log::info('WS getUAkun request', [
+            'context' => $context,
+            'ws_url' => $wsUrl,
+        ]);
+
+        if (!$wsUrl) {
+            Log::error('WS getUAkun: PSB_WS_URL kosong', ['context' => $context]);
+
+            return [];
+        }
+
+        try {
+            $client = new Client();
+            $response = $client->post($wsUrl, [
+                'json' => [
+                    'method' => 'getUAkun',
+                    'token' => '53c2f9aace5478a11815c65fcdb1a3dc29b60c3e102489384e3c1701f4355fa4',
+                ],
+                'timeout' => 10,
+            ]);
+
+            $raw = (string) $response->getBody();
+            $body = json_decode($raw, true);
+            $httpStatus = $response->getStatusCode();
+
+            Log::info('WS getUAkun response', [
+                'context' => $context,
+                'http_status' => $httpStatus,
+                'ws_status' => is_array($body) ? ($body['status'] ?? null) : null,
+                'ws_message' => is_array($body) ? ($body['message'] ?? null) : null,
+                'data_count' => (is_array($body) && isset($body['data']) && is_array($body['data']))
+                    ? count($body['data'])
+                    : 0,
+                'body_preview' => mb_substr($raw, 0, 500),
+            ]);
+
+            if (is_array($body) && isset($body['data']) && is_array($body['data'])) {
+                $akuns = $body['data'];
+            } elseif (is_array($body) && ($body['status'] ?? null) == 500) {
+                Log::error('WS getUAkun: response 500 (sering karena .env WS hilang)', [
+                    'context' => $context,
+                    'ws_url' => $wsUrl,
+                    'hint' => 'Cek .env dan error.log di folder WS_PSB_BAITUL_QURAN',
+                ]);
+            }
+        } catch (\Throwable $e) {
+            Log::error('WS getUAkun gagal (exception)', [
+                'context' => $context,
+                'ws_url' => $wsUrl,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        return $akuns;
+    }
 
 }
