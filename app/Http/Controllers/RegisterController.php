@@ -310,31 +310,32 @@ public function cekStatus(Request $request)
 
     $updatedCount = 0;
     foreach ($result['data'] as $tagihan) {
-        if ($tagihan['StatusBayar'] == "1") {
-            $peserta = \App\Models\DataPeserta::where('no_pendaftaran', $tagihan['NomorPendaftaran'])->first();
-
-            if ($peserta) {
-                $updated = $peserta->where(function ($q) {
-                        $q->whereNull('status_pembayaran_registrasi')
-                          ->orWhere('status_pembayaran_registrasi', 0);
-                    })
-                    ->update([
-                        'status_pembayaran_registrasi' => 1,
-                        'tgl_bayar_regis' => $tagihan['TanggalBayar']
-                    ]);
-
-                if ($updated) {
-                    \DB::table('tagihan')
-                        ->where('id_peserta', $peserta->id)
-                        ->update([
-                            'status' => 1,
-                            'tanggal_pembayaran_daful' => $tagihan['TanggalBayar'],
-                            'updated_at' => now()
-                        ]);
-                    $updatedCount++;
-                }
-            }
+        if ((string) ($tagihan['StatusBayar'] ?? '') !== '1') {
+            continue;
         }
+
+        $peserta = \App\Models\DataPeserta::where('no_pendaftaran', $tagihan['NomorPendaftaran'])->first();
+        if (!$peserta) {
+            continue;
+        }
+
+        $alreadyPaid = (int) $peserta->status_pembayaran_registrasi === 1;
+        if (!$alreadyPaid) {
+            $peserta->update([
+                'status_pembayaran_registrasi' => 1,
+                'tgl_bayar_regis' => $tagihan['TanggalBayar'] ?? now(),
+            ]);
+        }
+
+        \DB::table('tagihan')
+            ->where('id_peserta', $peserta->id)
+            ->update([
+                'status' => 1,
+                'tanggal_pembayaran_daful' => $tagihan['TanggalBayar'] ?? now(),
+                'updated_at' => now(),
+            ]);
+
+        $updatedCount++;
     }
 
     if ($updatedCount > 0) {
@@ -377,31 +378,32 @@ public function cekStatus1(Request $request)
 
     $updatedCount = 0;
     foreach ($result['data'] as $tagihan) {
-        if ($tagihan['StatusBayar'] == "1") {
-            $peserta = \App\Models\DataPeserta::where('no_pendaftaran', $tagihan['NomorPendaftaran'])->first();
-
-            if ($peserta) {
-                $updated = $peserta->where(function ($q) {
-                        $q->whereNull('status_pembayaran_registrasi')
-                          ->orWhere('status_pembayaran_registrasi', 0);
-                    })
-                    ->update([
-                        'status_pembayaran_registrasi' => 1,
-                        'tgl_bayar_regis' => $tagihan['TanggalBayar']
-                    ]);
-
-                if ($updated) {
-                    \DB::table('tagihan')
-                        ->where('id_peserta', $peserta->id)
-                        ->update([
-                            'status' => 1,
-                            'tanggal_pembayaran_daful' => $tagihan['TanggalBayar'],
-                            'updated_at' => now()
-                        ]);
-                    $updatedCount++;
-                }
-            }
+        if ((string) ($tagihan['StatusBayar'] ?? '') !== '1') {
+            continue;
         }
+
+        $peserta = \App\Models\DataPeserta::where('no_pendaftaran', $tagihan['NomorPendaftaran'])->first();
+        if (!$peserta) {
+            continue;
+        }
+
+        $alreadyPaid = (int) $peserta->status_pembayaran_registrasi === 1;
+        if (!$alreadyPaid) {
+            $peserta->update([
+                'status_pembayaran_registrasi' => 1,
+                'tgl_bayar_regis' => $tagihan['TanggalBayar'] ?? now(),
+            ]);
+        }
+
+        \DB::table('tagihan')
+            ->where('id_peserta', $peserta->id)
+            ->update([
+                'status' => 1,
+                'tanggal_pembayaran_daful' => $tagihan['TanggalBayar'] ?? now(),
+                'updated_at' => now(),
+            ]);
+
+        $updatedCount++;
     }
 
     if ($updatedCount > 0) {
