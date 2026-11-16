@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Kartu Ujian</title>
@@ -45,7 +45,7 @@
     <td style="border:none; text-align:left; padding-top:5px; padding-left:20px;">
         <div style="font-size:20px; font-weight:bold;">PENERIMAAN SANTRI BARU</div>
         <div style="font-size:15px; font-weight:bold;">
-            PSB {{ $peserta->fakultas }} {{ $peserta->relasiGelombang->tahun_akademik ?? '-' }}<br>
+            PMB {{ $peserta->fakultas }} {{ $peserta->relasiGelombang->tahun_akademik ?? '-' }}<br>
             No. Pendaftaran {{ $peserta->no_pendaftaran }}
         </div>
     </td>
@@ -132,7 +132,7 @@
     </tbody>
 </table>
 
-        <div class="footer" style="margin-top:20px;">PANITIA PSB</div>
+        <div class="footer" style="margin-top:20px;">PANITIA PMB</div>
     </div>
     @if($index < count($pesertaList)-1)
         <div style="page-break-after: always;"></div>

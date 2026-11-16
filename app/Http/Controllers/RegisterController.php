@@ -37,6 +37,7 @@ class RegisterController extends Controller
     $request->validate([
         'gender'            => 'required|in:L,P',
         'nama'              => 'required|string|max:100',
+        'alamat'            => 'required|string|max:500',
         'id_gelombang'      => 'required|integer',
         'id_jalur'          => 'required|integer',
         'id_fakultas'       => 'required|integer',
@@ -102,6 +103,7 @@ class RegisterController extends Controller
         'gender'           => $request->gender,
         'status_paid'      => 0,
         'va_number'        => $vaNumber,
+        'alamat_lengkap'   => $request->alamat,
         'dusun'            => $request->dusun,
         'id_provinsi'      => $request->provinsi_id,
         'provinsi'         => $provinsi?->Provinsi,

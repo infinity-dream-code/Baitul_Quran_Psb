@@ -241,6 +241,18 @@
                                         </span>
                                         <span class="text-sm">Akta Kelahiran</span>
                                     </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white {{ $peserta->dokumen_ijazah ? 'bg-green-500' : 'bg-red-500' }}">
+                                            {{ $peserta->dokumen_ijazah ? '✓' : '✗' }}
+                                        </span>
+                                        <span class="text-sm">Ijazah / SKL</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white {{ $peserta->no_bpjs ? 'bg-green-500' : 'bg-gray-400' }}">
+                                            {{ $peserta->no_bpjs ? '✓' : '–' }}
+                                        </span>
+                                        <span class="text-sm">BPJS {{ $peserta->no_bpjs ? '(' . $peserta->no_bpjs . ')' : '(opsional)' }}</span>
+                                    </div>
                                 </div>
                             </div>
 

@@ -388,14 +388,12 @@
                     </div>
                 </div>
 
-@if($peserta->status_ujian === 'lulus')
-    <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+<div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
         <h2 class="text-xl font-semibold text-gray-800 border-b border-gray-200 pb-3 mb-6 flex items-center">
             Upload Dokumen
         </h2>
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {{-- Upload KK --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Upload Kartu Keluarga *</label>
                 <input type="file" name="dokumen_kk" accept=".jpg,.jpeg,.png,image/jpeg,image/png"
@@ -404,18 +402,14 @@
                            file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
                            file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
                 <p class="text-xs text-gray-500 mt-1">Format: JPG, JPEG, PNG (Max 2MB)</p>
-
                 @if($peserta->dokumen_kk)
                     <p class="text-sm text-green-600 mt-1">
                         Sudah diupload —
-                        <a href="{{ asset('storage/'.$peserta->dokumen_kk) }}" target="_blank" class="text-blue-600 underline">
-                            Lihat Dokumen
-                        </a>
+                        <a href="{{ asset('storage/'.$peserta->dokumen_kk) }}" target="_blank" class="text-blue-600 underline">Lihat Dokumen</a>
                     </p>
                 @endif
             </div>
 
-            {{-- Upload Akta Kelahiran --}}
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Upload Akta Kelahiran *</label>
                 <input type="file" name="dokumen_akte_kelahiran" accept=".jpg,.jpeg,.png,image/jpeg,image/png"
@@ -424,19 +418,38 @@
                            file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
                            file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
                 <p class="text-xs text-gray-500 mt-1">Format: JPG, JPEG, PNG (Max 2MB)</p>
-
                 @if($peserta->dokumen_akte_kelahiran)
                     <p class="text-sm text-green-600 mt-1">
                         Sudah diupload —
-                        <a href="{{ asset('storage/'.$peserta->dokumen_akte_kelahiran) }}" target="_blank" class="text-blue-600 underline">
-                            Lihat Dokumen
-                        </a>
+                        <a href="{{ asset('storage/'.$peserta->dokumen_akte_kelahiran) }}" target="_blank" class="text-blue-600 underline">Lihat Dokumen</a>
                     </p>
                 @endif
             </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Ijazah / Surat Keterangan Lulus *</label>
+                <input type="file" name="dokumen_ijazah" accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                    class="w-full px-4 py-3 border {{ empty($peserta->dokumen_ijazah) ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500' }}
+                           rounded-lg focus:ring-2 focus:border-transparent transition duration-200
+                           file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                           file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100">
+                <p class="text-xs text-gray-500 mt-1">Format: JPG, JPEG, PNG (Max 2MB)</p>
+                @if($peserta->dokumen_ijazah)
+                    <p class="text-sm text-green-600 mt-1">
+                        Sudah diupload —
+                        <a href="{{ asset('storage/'.$peserta->dokumen_ijazah) }}" target="_blank" class="text-blue-600 underline">Lihat Dokumen</a>
+                    </p>
+                @endif
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Kartu BPJS (opsional)</label>
+                <input type="text" name="no_bpjs" value="{{ old('no_bpjs', $peserta->no_bpjs) }}"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                    placeholder="Nomor Kartu BPJS">
+            </div>
         </div>
     </div>
-@endif
 
 
                 <div class="flex justify-center pt-6">
@@ -547,6 +560,17 @@
         <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
             <i class="fas fa-receipt text-blue-500"></i> Rincian Tagihan Registrasi
         </h4>
+
+        @if(!empty($saldoTagihan['ok']) && !empty($saldoTagihan['items']))
+            <div class="mb-4 p-4 rounded-lg border border-blue-100 bg-blue-50">
+                <p class="text-sm font-semibold text-blue-800 mb-2">Saldo / Sisa Cicilan (dari sistem tagihan)</p>
+                <p class="text-sm text-gray-700">
+                    Total: <strong>Rp {{ number_format($saldoTagihan['total'], 0, ',', '.') }}</strong> —
+                    Terbayar: <strong>Rp {{ number_format($saldoTagihan['terbayar'], 0, ',', '.') }}</strong> —
+                    Sisa: <strong class="{{ $saldoTagihan['sisa'] > 0 ? 'text-red-600' : 'text-green-600' }}">Rp {{ number_format($saldoTagihan['sisa'], 0, ',', '.') }}</strong>
+                </p>
+            </div>
+        @endif
 
         <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
             <table class="w-full text-sm">
@@ -815,7 +839,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const docInputs = [
         { selector: 'input[name="dokumen_kk"]', maxSize: 2 },
-        { selector: 'input[name="dokumen_akte_kelahiran"]', maxSize: 2 }
+        { selector: 'input[name="dokumen_akte_kelahiran"]', maxSize: 2 },
+        { selector: 'input[name="dokumen_ijazah"]', maxSize: 2 }
     ];
     
     docInputs.forEach(item => {

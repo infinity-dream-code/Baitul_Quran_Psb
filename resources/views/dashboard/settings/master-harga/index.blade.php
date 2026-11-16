@@ -1,9 +1,9 @@
-@extends('dashboard.template')
+﻿@extends('dashboard.template')
 
 @section('content')
 <div id="master-harga" class="tab-content opacity-100 p-4">
     <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-gray-700">Master Harga PSB</h3>
+        <h3 class="text-xl font-bold text-gray-700">Master Harga PMB</h3>
         <a href="{{ url('PmbRefMasterHargaPendaftarans/add') }}"
            class="inline-flex items-center bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium shadow">
             <i class="fas fa-plus mr-2"></i> Tambah Master Harga

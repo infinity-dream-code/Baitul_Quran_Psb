@@ -244,15 +244,20 @@ public function setKelulusanPeserta1(Request $request, $status)
         }
 
         $fieldWajib = ['no_hp','nik','no_kk','kewarganegaraan'];
-        $uploadWajib = ['foto','dokumen_kk','dokumen_akte_kelahiran'];
+        $uploadWajib = ['foto','dokumen_kk','dokumen_akte_kelahiran','dokumen_ijazah'];
 
-        $pesertaList = $query->get()->filter(function ($peserta) use ($fieldWajib) {
+        $pesertaList = $query->get()->filter(function ($peserta) use ($fieldWajib, $uploadWajib) {
             foreach ($fieldWajib as $field) {
                 if (empty($peserta->$field)) {
                     return false;
                 }
             }
-            return !empty($peserta->foto);
+            foreach ($uploadWajib as $field) {
+                if (empty($peserta->$field)) {
+                    return false;
+                }
+            }
+            return true;
         });
 
         $perPage = 10;
@@ -357,6 +362,7 @@ public function setKelulusanPeserta1(Request $request, $status)
             'foto',
             'dokumen_kk',
             'dokumen_akte_kelahiran',
+            'dokumen_ijazah',
         ];
 
         $pesertaList = $query->orderBy('created_at', 'desc')->paginate(10);
@@ -794,15 +800,21 @@ public function setKelulusanPeserta(Request $request, $status)
         'foto',
         'dokumen_kk',
         'dokumen_akte_kelahiran',
+        'dokumen_ijazah',
     ];
 
-    $pesertaList = $query->get()->filter(function ($peserta) use ($fieldWajib) {
+    $pesertaList = $query->get()->filter(function ($peserta) use ($fieldWajib, $uploadWajib) {
         foreach ($fieldWajib as $field) {
             if (empty($peserta->$field)) {
                 return false;
             }
         }
-        return !empty($peserta->foto);
+        foreach ($uploadWajib as $field) {
+            if (empty($peserta->$field)) {
+                return false;
+            }
+        }
+        return true;
     });
 
     $perPage = 10;
@@ -884,6 +896,7 @@ public function cekBerkasSetUjian(Request $request)
         'foto',
         'dokumen_kk',
         'dokumen_akte_kelahiran',
+        'dokumen_ijazah',
     ];
 
     $pesertaList = $query->get()->filter(function ($peserta) use ($fieldWajib) {

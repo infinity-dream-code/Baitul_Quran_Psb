@@ -90,6 +90,7 @@
                                     'foto' => 'Photo',
                                     'dokumen_kk' => 'KK',
                                     'dokumen_akte_kelahiran' => 'Akte',
+                                    'dokumen_ijazah' => 'Ijazah',
                                 ];
                             @endphp
                             <div class="flex flex-wrap justify-center gap-1">

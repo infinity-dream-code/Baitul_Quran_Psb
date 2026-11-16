@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informasi Akun Anda - PSB {{ $peserta->fakultas }}</title>
+    <title>Informasi Akun Anda - PMB {{ $peserta->fakultas }}</title>
     <style>
         body {font-family: Arial, sans-serif;margin: 0;padding: 20px;background: #f0f0f0;line-height: 1.4;}
         .container {background: white;max-width: 650px;margin: 0 auto;padding: 0;box-shadow: 0 0 5px rgba(0,0,0,0.2);border: 1px solid #000;}
@@ -53,7 +53,7 @@
           <div class="logo"><img src="{{ asset(config('client.logo')) }}" alt="Logo {{ config('client.name') }}"></div>
                 
             <div class="address">{{ config('client.region') }}</div>
-            <div class="school-title">PANITIA PENERIMAAN SANTRI BARU PSB {{ $peserta->fakultas }}</div>
+            <div class="school-title">PANITIA PENERIMAAN SANTRI BARU PMB {{ $peserta->fakultas }}</div>
         </div>
         <div class="content">
             <div class="section-title">Informasi Akun Anda</div>
@@ -92,7 +92,7 @@
                 Sebagai berikut : {{ $peserta->va_number }}
             </div>
             <div class="signature">
-                Panitia PSB
+                Panitia PMB
             </div>
         </div>
     </div>
