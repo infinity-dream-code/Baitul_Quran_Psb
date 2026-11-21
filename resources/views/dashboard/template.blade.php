@@ -326,7 +326,6 @@
            @yield('content')
         </div>
     </div>
-<script src="https://cdn.tailwindcss.com"></script>
     <script>
         function setActiveMenu() {
             const currentPath = window.location.pathname;
@@ -355,60 +354,49 @@
             
             let activeFound = false;
             
-            // Cek sub-menu dulu (menu di dalam dropdown) - dengan pencocokan yang lebih ketat
+            // Pilih sub-menu dengan match paling spesifik (href terpanjang yang cocok)
+            let bestSub = null;
+            let bestLen = 0;
             subMenuItems.forEach(item => {
+                item.classList.remove('bg-green-800');
                 const href = item.getAttribute('href');
-                if (href) {
-                    let cleanHref = href.split('?')[0];
-                    
-                    if (cleanHref.includes('{{') && cleanHref.includes('}}')) {
-                        cleanHref = cleanHref.replace(/\{\{url\('([^']+)'\)\}\}/g, '$1');
-                        cleanHref = cleanHref.replace(/\{\{[^}]+\}\}/g, '');
-                    }
-                    
-                    // Pencocokan yang lebih tepat - harus sama persis atau path mengandung bagian unik dari href
-                    if (currentPath === cleanHref || 
-                        (cleanHref.length > 10 && currentPath.includes(cleanHref)) ||
-                        (cleanHref.includes('cek_berkas_set_ujian') && currentPath.includes('cek_berkas_set_ujian')) ||
-                        (cleanHref.includes('cetak_kartu_ujian_reguler') && currentPath.includes('cetak_kartu_ujian_reguler')) ||
-                        (cleanHref.includes('edit_jadwal_ujian') && currentPath.includes('edit_jadwal_ujian')) ||
-                        (cleanHref.includes('set_kelulusan') && currentPath.includes('set_kelulusan')) ||
-                        (cleanHref.includes('registrasi-lunas') && currentPath.includes('registrasi-lunas')) ||
-                        (cleanHref.includes('registrasi-cekstatus') && currentPath.includes('registrasi-cekstatus'))
-                    ) {
-                        const menuType = item.getAttribute('data-menu');
-                        if (menuType) {
-                            const dropdown = document.getElementById(`${menuType}-dropdown`);
-                            const button = document.querySelector(`[data-target="${menuType}-dropdown"]`);
-                            const arrow = button?.querySelector('.dropdown-arrow');
-                            
-                            if (dropdown) {
-                                dropdown.classList.add('active');
-                            }
-                            if (button) {
-                                button.classList.add('bg-green-700', 'border-l-4', 'border-white');
-                            }
-                            if (arrow) {
-                                arrow.style.transform = 'rotate(180deg)';
-                            }
-                            activeFound = true;
-                            return; // Keluar dari loop jika sudah ketemu
-                        }
-                    }
+                if (!href) return;
+                let cleanHref = href.split('?')[0];
+                try { cleanHref = new URL(cleanHref, window.location.origin).pathname; } catch (e) {}
+
+                const matched = currentPath === cleanHref ||
+                    (cleanHref.length > 10 && (currentPath === cleanHref || currentPath.startsWith(cleanHref + '/') || currentPath.startsWith(cleanHref + '-')));
+
+                if (matched && cleanHref.length >= bestLen) {
+                    bestSub = item;
+                    bestLen = cleanHref.length;
                 }
             });
-            
-            // Kalau tidak ketemu di sub-menu, cek menu utama (tapi skip dashboard)
+
+            if (bestSub) {
+                bestSub.classList.add('bg-green-800');
+                const menuType = bestSub.getAttribute('data-menu');
+                if (menuType) {
+                    const dropdown = document.getElementById(`${menuType}-dropdown`);
+                    const button = document.querySelector(`[data-target="${menuType}-dropdown"]`);
+                    const arrow = button?.querySelector('.dropdown-arrow');
+                    if (dropdown) dropdown.classList.add('active');
+                    if (button) button.classList.add('bg-green-700', 'border-l-4', 'border-white');
+                    if (arrow) arrow.style.transform = 'rotate(180deg)';
+                    activeFound = true;
+                }
+            }
+
             if (!activeFound) {
                 menuItems.forEach(item => {
                     const href = item.getAttribute('href');
                     const menuType = item.getAttribute('data-menu');
                     if (href && menuType !== 'dashboard') {
-                        const cleanHref = href.split('?')[0];
+                        let cleanHref = href.split('?')[0];
+                        try { cleanHref = new URL(cleanHref, window.location.origin).pathname; } catch (e) {}
                         if (currentPath === cleanHref) {
                             item.classList.add('bg-green-700', 'border-l-4', 'border-white');
                             activeFound = true;
-                            return; // Keluar dari loop jika sudah ketemu
                         }
                     }
                 });
@@ -485,26 +473,6 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             setActiveMenu();
-            
-            const savedActiveMenu = localStorage.getItem('activeMenu');
-            if (savedActiveMenu) {
-                const menuItems = document.querySelectorAll(`[data-menu="${savedActiveMenu}"]`);
-                menuItems.forEach(item => {
-                    if (item.tagName === 'BUTTON' && item.classList.contains('dropdown-toggle')) {
-                        const targetId = item.getAttribute('data-target');
-                        const dropdown = document.getElementById(targetId);
-                        const arrow = item.querySelector('.dropdown-arrow');
-                        
-                        if (dropdown) {
-                            dropdown.classList.add('active');
-                        }
-                        if (arrow) {
-                            arrow.style.transform = 'rotate(180deg)';
-                        }
-                        item.classList.add('bg-green-700', 'border-l-4', 'border-white');
-                    }
-                });
-            }
         });
 
         if (document.getElementById('statisticsChart')) {

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Samakan gaya pagination di semua menu (Tailwind).
+        Paginator::useTailwind();
+
         // Kalau SESSION_DRIVER=database tapi tabel sessions belum ada,
         // jangan crash — fallback ke file.
         if (config('session.driver') === 'database') {

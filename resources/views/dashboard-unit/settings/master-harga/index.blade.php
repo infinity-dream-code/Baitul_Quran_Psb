@@ -1,44 +1,44 @@
 ﻿@extends('dashboard-unit.template')
 
 @section('content')
-<div id="master-harga" class="tab-content opacity-100 p-4">
-    <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold text-gray-700">Master Harga PMB</h3>
+<div class="bg-white p-6 shadow rounded-lg m-4">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-xl font-semibold text-gray-800">Master Harga PMB</h1>
     </div>
 
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <table class="min-w-full text-sm text-left text-gray-600">
+    <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300 text-sm">
             <thead class="bg-green-600 text-white uppercase text-xs">
                 <tr>
-                    <th class="px-4 py-3">#</th>
-                    <th class="px-4 py-3">Nama Jalur</th>
-                    <th class="px-4 py-3">Tahap</th>
-                    <th class="px-4 py-3">Sekolah</th>
-                    <th class="px-4 py-3">Jurusan</th>
-                    <th class="px-4 py-3">Biaya Registrasi</th>
-                    <th class="px-4 py-3">Biaya Daftar Ulang</th>
-                    <th class="px-4 py-3 text-center">Aktif</th>
-                    <th class="px-4 py-3 text-center">Aksi</th>
+                    <th class="border px-3 py-2">#</th>
+                    <th class="border px-3 py-2">Nama Jalur</th>
+                    <th class="border px-3 py-2">Tahap</th>
+                    <th class="border px-3 py-2">Sekolah</th>
+                    <th class="border px-3 py-2">Jurusan</th>
+                    <th class="border px-3 py-2">Biaya Registrasi</th>
+                    <th class="border px-3 py-2">Biaya Daftar Ulang</th>
+                    <th class="border px-3 py-2 text-center">Aktif</th>
+                    <th class="border px-3 py-2 text-center">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
+            <tbody>
                 @forelse($masterHarga as $index => $mh)
                 <tr class="hover:bg-gray-50 transition" data-jalur="{{ $mh->nama_jalur }}" data-prodi="{{ $mh->nama_prodi }}">
-                    <td class="px-4 py-3">{{ $masterHarga->firstItem() + $index }}</td>
-                    <td class="px-4 py-3 font-medium">{{ $mh->nama_jalur }}</td>
-                    <td class="px-4 py-3">Tahap {{ $mh->nama_gelombang }}</td>
-                    <td class="px-4 py-3">{{ $mh->nama_fakultas }}</td>
-                    <td class="px-4 py-3">{{ $mh->nama_prodi }}</td>
-                    <td class="px-4 py-3">Rp {{ number_format($mh->harga_final, 0, ',', '.') }}</td>
-                    <td class="px-4 py-3">Rp {{ number_format($mh->harga_registrasi, 0, ',', '.') }}</td>
-                    <td class="px-4 py-3 text-center">
+                    <td class="border px-3 py-2">{{ $masterHarga->firstItem() + $index }}</td>
+                    <td class="border px-3 py-2 font-medium">{{ $mh->nama_jalur }}</td>
+                    <td class="border px-3 py-2">Tahap {{ $mh->nama_gelombang }}</td>
+                    <td class="border px-3 py-2">{{ $mh->nama_fakultas }}</td>
+                    <td class="border px-3 py-2">{{ $mh->nama_prodi }}</td>
+                    <td class="border px-3 py-2">Rp {{ number_format($mh->harga_final, 0, ',', '.') }}</td>
+                    <td class="border px-3 py-2">Rp {{ number_format($mh->harga_registrasi, 0, ',', '.') }}</td>
+                    <td class="border px-3 py-2 text-center">
                         <label class="inline-flex items-center cursor-pointer">
                             <input type="checkbox" class="sr-only peer toggle-harga" data-id="{{ $mh->id }}" {{ $mh->active ? 'checked' : '' }} onchange="toggleHargaActive({{ $mh->id }})">
                             <div class="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-6 peer-checked:after:border-white"></div>
                         </label>
                     </td>
-                    <td class="px-4 py-3 text-center">
-                        <a href="{{ url('PmbRefMasterHargaPendaftarans/' . str_replace(' ', '-', $role ?? 'admin') . '/edit/' . $mh->id) }}" 
+                    <td class="border px-3 py-2 text-center">
+                        <a href="{{ url('PmbRefMasterHargaPendaftarans/' . str_replace(' ', '-', $role ?? 'admin') . '/edit/' . $mh->id) }}"
                            class="text-blue-600 hover:text-blue-800 transition">
                             <i class="fas fa-edit text-lg"></i>
                         </a>
@@ -46,43 +46,16 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="9" class="px-4 py-6 text-center text-gray-500">Belum ada data Master Harga</td>
+                    <td colspan="9" class="border px-3 py-6 text-center text-gray-500">Belum ada data Master Harga</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 
-    @if(method_exists($masterHarga, 'total'))
-        <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white rounded-lg shadow px-4 py-3">
-            <p class="text-sm text-gray-600">
-                Menampilkan
-                <span class="font-semibold">{{ $masterHarga->firstItem() ?? 0 }}</span>
-                –
-                <span class="font-semibold">{{ $masterHarga->lastItem() ?? 0 }}</span>
-                dari
-                <span class="font-semibold">{{ $masterHarga->total() }}</span>
-                data
-            </p>
-            <div class="flex items-center gap-2">
-                @if($masterHarga->onFirstPage())
-                    <span class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">← Prev</span>
-                @else
-                    <a href="{{ $masterHarga->previousPageUrl() }}" class="px-3 py-1.5 text-sm rounded-lg bg-green-600 hover:bg-green-700 text-white">← Prev</a>
-                @endif
-
-                <span class="text-sm text-gray-700 font-medium">
-                    Halaman {{ $masterHarga->currentPage() }} / {{ max(1, $masterHarga->lastPage()) }}
-                </span>
-
-                @if($masterHarga->hasMorePages())
-                    <a href="{{ $masterHarga->nextPageUrl() }}" class="px-3 py-1.5 text-sm rounded-lg bg-green-600 hover:bg-green-700 text-white">Next →</a>
-                @else
-                    <span class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">Next →</span>
-                @endif
-            </div>
-        </div>
-    @endif
+    <div class="mt-4">
+        {{ $masterHarga->links() }}
+    </div>
 </div>
 
 <script>
@@ -102,7 +75,7 @@ function toggleHargaActive(id) {
     })
     .then(res => res.json())
     .then(data => {
-        if(data.success){
+        if (data.success) {
             document.querySelectorAll('tr[data-jalur][data-prodi]').forEach(row => {
                 if (row.getAttribute('data-jalur') === currentJalur && row.getAttribute('data-prodi') === currentProdi) {
                     const checkbox = row.querySelector('.toggle-harga');
