@@ -407,6 +407,14 @@ Route::resource('PmbMstPendaftarans/setting-slider',ImagesliderController::class
 Route::resource('PmbMstPendaftarans/setting-informasi', InformasiController::class)
     ->names('informasi');
 Route::resource('PmbMstPendaftarans/setting-brosur', BrosurController::class);
+    // Alias underscore (beberapa link/bookmark memakai setting_brosur)
+    Route::get('PmbMstPendaftarans/setting_brosur', [BrosurController::class, 'index']);
+    Route::get('PmbMstPendaftarans/setting_brosur/create', [BrosurController::class, 'create']);
+    Route::post('PmbMstPendaftarans/setting_brosur', [BrosurController::class, 'store']);
+    Route::get('PmbMstPendaftarans/setting_brosur/{setting_brosur}/edit', [BrosurController::class, 'edit']);
+    Route::get('PmbMstPendaftarans/setting_brosur/{setting_brosur}', [BrosurController::class, 'show']);
+    Route::put('PmbMstPendaftarans/setting_brosur/{setting_brosur}', [BrosurController::class, 'update']);
+    Route::delete('PmbMstPendaftarans/setting_brosur/{setting_brosur}', [BrosurController::class, 'destroy']);
 
 
     Route::post('master_akademik/toggle/{id}', [SettingsController::class, 'toggleAkademik'])->name('master_akademik.toggle');

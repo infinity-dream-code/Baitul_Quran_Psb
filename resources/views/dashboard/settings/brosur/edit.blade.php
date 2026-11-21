@@ -39,12 +39,13 @@
         {{-- Upload Brosur Baru --}}
         <div>
             <label for="brosur" class="block text-sm font-medium text-gray-700 mb-2">Upload Brosur Baru (Opsional)</label>
-            <input type="file" name="brosur" id="brosur"
+            <input type="file" name="brosur" id="brosur" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
                    class="block w-full text-sm text-gray-700 border border-gray-300 rounded-lg shadow-sm 
                           file:mr-4 file:py-2 file:px-4
                           file:rounded-md file:border-0 file:text-sm file:font-semibold
                           file:bg-green-50 file:text-green-700 hover:file:bg-green-100
                           focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <p class="mt-2 text-xs text-gray-500">Format: PDF / JPG / PNG. Maksimal <span class="font-semibold text-green-700">20 MB</span>.</p>
         </div>
 
         {{-- Tombol Aksi --}}

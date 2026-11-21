@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Brosur;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BrosurController extends Controller
 {
+    private const MAX_KB = 20480; // 20 MB
+
     public function index()
     {
         $brosurs = Brosur::with('user')->orderByDesc('tanggal_upload')->get();
@@ -20,61 +23,63 @@ class BrosurController extends Controller
         return view('dashboard.settings.brosur.create');
     }
 
-public function store(Request $request)
-{
-    if (Brosur::count() >= 8) {
-        return redirect()->route('setting-brosur.index')->with('error', 'Maksimal hanya 8 brosur yang bisa diupload.');
+    public function show(Brosur $setting_brosur)
+    {
+        return redirect()->route('setting-brosur.edit', $setting_brosur);
     }
 
-    $request->validate([
-        'brosur' => 'required|mimes:pdf,jpg,jpeg,png|max:4096'
-    ]);
+    public function store(Request $request)
+    {
+        if (Brosur::count() >= 8) {
+            return redirect()->route('setting-brosur.index')->with('error', 'Maksimal hanya 8 brosur yang bisa diupload.');
+        }
 
-    $file = $request->file('brosur');
-    $originalName = $file->getClientOriginalName();
-    $path = $file->storeAs('brosur', $originalName, 'public');
+        $request->validate([
+            'brosur' => 'required|mimes:pdf,jpg,jpeg,png|max:' . self::MAX_KB,
+        ], [
+            'brosur.max' => 'Ukuran brosur maksimal 20 MB.',
+            'brosur.mimes' => 'Format brosur harus PDF, JPG, JPEG, atau PNG.',
+        ]);
 
-    Brosur::create([
-        'id_user' => Auth::id(),
-        'brosur' => $path,
-        'tanggal_upload' => now()
-    ]);
+        $path = $this->storeBrosurFile($request->file('brosur'));
 
-    return redirect()->route('setting-brosur.index')->with('success', 'Brosur berhasil ditambahkan');
-}
+        Brosur::create([
+            'id_user' => Auth::id(),
+            'brosur' => $path,
+            'tanggal_upload' => now(),
+        ]);
 
-
+        return redirect()->route('setting-brosur.index')->with('success', 'Brosur berhasil ditambahkan');
+    }
 
     public function edit(Brosur $setting_brosur)
     {
         return view('dashboard.settings.brosur.edit', compact('setting_brosur'));
     }
 
-public function update(Request $request, Brosur $setting_brosur)
-{
-    $request->validate([
-        'brosur' => 'nullable|mimes:pdf,jpg,jpeg,png|max:2048'
-    ]);
+    public function update(Request $request, Brosur $setting_brosur)
+    {
+        $request->validate([
+            'brosur' => 'nullable|mimes:pdf,jpg,jpeg,png|max:' . self::MAX_KB,
+        ], [
+            'brosur.max' => 'Ukuran brosur maksimal 20 MB.',
+            'brosur.mimes' => 'Format brosur harus PDF, JPG, JPEG, atau PNG.',
+        ]);
 
-    if ($request->hasFile('brosur')) {
-        if ($setting_brosur->brosur && Storage::disk('public')->exists($setting_brosur->brosur)) {
-            Storage::disk('public')->delete($setting_brosur->brosur);
+        if ($request->hasFile('brosur')) {
+            if ($setting_brosur->brosur && Storage::disk('public')->exists($setting_brosur->brosur)) {
+                Storage::disk('public')->delete($setting_brosur->brosur);
+            }
+
+            $setting_brosur->brosur = $this->storeBrosurFile($request->file('brosur'));
+            $setting_brosur->tanggal_upload = now();
         }
 
-        $file = $request->file('brosur');
-        $originalName = $file->getClientOriginalName();
-        $path = $file->storeAs('brosur', $originalName, 'public');
+        $setting_brosur->id_user = Auth::id();
+        $setting_brosur->save();
 
-        $setting_brosur->brosur = $path;
-        $setting_brosur->tanggal_upload = now();
+        return redirect()->route('setting-brosur.index')->with('success', 'Brosur berhasil diperbarui');
     }
-
-    $setting_brosur->id_user = Auth::id();
-    $setting_brosur->save();
-
-    return redirect()->route('setting-brosur.index')->with('success', 'Brosur berhasil diperbarui');
-}
-
 
     public function destroy(Brosur $setting_brosur)
     {
@@ -84,5 +89,15 @@ public function update(Request $request, Brosur $setting_brosur)
 
         $setting_brosur->delete();
         return redirect()->route('setting-brosur.index')->with('success', 'Brosur berhasil dihapus');
+    }
+
+    private function storeBrosurFile(\Illuminate\Http\UploadedFile $file): string
+    {
+        $ext = strtolower($file->getClientOriginalExtension() ?: $file->extension() ?: 'bin');
+        $base = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $safe = Str::slug($base) ?: 'brosur';
+        $name = $safe . '-' . now()->format('YmdHis') . '-' . Str::random(4) . '.' . $ext;
+
+        return $file->storeAs('brosur', $name, 'public');
     }
 }
