@@ -56,9 +56,34 @@
         </table>
     </div>
 
-    @if($masterHarga instanceof \Illuminate\Contracts\Pagination\Paginator && $masterHarga->hasPages())
-        <div class="mt-4">
-            {{ $masterHarga->links() }}
+    @if(method_exists($masterHarga, 'total'))
+        <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-white rounded-lg shadow px-4 py-3">
+            <p class="text-sm text-gray-600">
+                Menampilkan
+                <span class="font-semibold">{{ $masterHarga->firstItem() ?? 0 }}</span>
+                –
+                <span class="font-semibold">{{ $masterHarga->lastItem() ?? 0 }}</span>
+                dari
+                <span class="font-semibold">{{ $masterHarga->total() }}</span>
+                data
+            </p>
+            <div class="flex items-center gap-2">
+                @if($masterHarga->onFirstPage())
+                    <span class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">← Prev</span>
+                @else
+                    <a href="{{ $masterHarga->previousPageUrl() }}" class="px-3 py-1.5 text-sm rounded-lg bg-green-600 hover:bg-green-700 text-white">← Prev</a>
+                @endif
+
+                <span class="text-sm text-gray-700 font-medium">
+                    Halaman {{ $masterHarga->currentPage() }} / {{ max(1, $masterHarga->lastPage()) }}
+                </span>
+
+                @if($masterHarga->hasMorePages())
+                    <a href="{{ $masterHarga->nextPageUrl() }}" class="px-3 py-1.5 text-sm rounded-lg bg-green-600 hover:bg-green-700 text-white">Next →</a>
+                @else
+                    <span class="px-3 py-1.5 text-sm rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed">Next →</span>
+                @endif
+            </div>
         </div>
     @endif
 </div>
