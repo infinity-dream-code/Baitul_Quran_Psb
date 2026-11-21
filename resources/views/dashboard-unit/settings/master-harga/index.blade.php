@@ -24,7 +24,7 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse($masterHarga as $index => $mh)
                 <tr class="hover:bg-gray-50 transition" data-jalur="{{ $mh->nama_jalur }}" data-prodi="{{ $mh->nama_prodi }}">
-                    <td class="px-4 py-3">{{ $index+1 }}</td>
+                    <td class="px-4 py-3">{{ $masterHarga->firstItem() + $index }}</td>
                     <td class="px-4 py-3 font-medium">{{ $mh->nama_jalur }}</td>
                     <td class="px-4 py-3">Tahap {{ $mh->nama_gelombang }}</td>
                     <td class="px-4 py-3">{{ $mh->nama_fakultas }}</td>
@@ -52,6 +52,12 @@
             </tbody>
         </table>
     </div>
+
+    @if($masterHarga instanceof \Illuminate\Contracts\Pagination\Paginator && $masterHarga->hasPages())
+        <div class="mt-4">
+            {{ $masterHarga->links() }}
+        </div>
+    @endif
 </div>
 
 <script>

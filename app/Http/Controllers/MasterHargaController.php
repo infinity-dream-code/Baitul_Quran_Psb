@@ -24,7 +24,8 @@ class MasterHargaController extends Controller
     {
         $masterHarga = MasterHarga::with(['jalur', 'gelombang', 'fakultas', 'prodi'])
             ->orderBy('id')
-            ->get();
+            ->paginate(10)
+            ->withQueryString();
 
         return view('dashboard.settings.master-harga.index', compact('masterHarga'));
     }
@@ -62,7 +63,7 @@ class MasterHargaController extends Controller
         $query->whereIn('id_prodi', $prodiIds);
     }
 
-    $masterHarga = $query->orderBy('id')->get();
+    $masterHarga = $query->orderBy('id')->paginate(10)->withQueryString();
 
     return view('dashboard-unit.settings.master-harga.index', compact('masterHarga', 'menus', 'role'));
 }
