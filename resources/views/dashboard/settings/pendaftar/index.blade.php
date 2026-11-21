@@ -19,9 +19,9 @@
                     <td class="border px-3 py-2">{{ $i+1 }}</td>
                     <td class="border px-3 py-2 font-medium">{{ strtoupper($f->fakultas) }}</td>
                     <td class="border px-3 py-2 text-center">
-                        <label class="inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" {{ $f->aktif ? 'checked' : '' }} onchange="toggleFakultas({{ $f->id }})">
-                            <div class="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-6 peer-checked:after:border-white"></div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" {{ $f->aktif ? 'checked' : '' }} onchange="toggleFakultas({{ $f->id }})">
+                            <span class="toggle-slider"></span>
                         </label>
                     </td>
                 </tr>

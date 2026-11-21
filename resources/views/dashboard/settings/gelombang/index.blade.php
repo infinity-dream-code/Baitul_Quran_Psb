@@ -23,9 +23,9 @@
                     <td class="border px-3 py-2 text-sm text-gray-700">{{ $g->tahun }}</td>
                     <td class="border px-3 py-2 text-sm text-gray-700">{{ $g->pengumuman->format('d-m-Y') }}</td>
                     <td class="border px-3 py-2 text-center">
-                        <label class="inline-flex items-center cursor-pointer">
-                            <input type="checkbox" class="sr-only peer" {{ $g->is_active ? 'checked' : '' }} onchange="toggleGelombang({{ $g->id }})">
-                            <div class="w-12 h-6 bg-gray-300 rounded-full peer-checked:bg-green-500 relative after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-6 peer-checked:after:border-white"></div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" {{ $g->is_active ? 'checked' : '' }} onchange="toggleGelombang({{ $g->id }})">
+                            <span class="toggle-slider"></span>
                         </label>
                     </td>
                 </tr>
