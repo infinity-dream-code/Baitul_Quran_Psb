@@ -53,8 +53,15 @@
         </table>
     </div>
 
-    <div class="mt-4">
-        {{ $masterHarga->links() }}
+    <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <p class="text-sm text-gray-600">
+            Menampilkan {{ $masterHarga->firstItem() ?? 0 }}–{{ $masterHarga->lastItem() ?? 0 }}
+            dari {{ $masterHarga->total() }} data
+            @if($masterHarga->lastPage() > 1)
+                (halaman {{ $masterHarga->currentPage() }}/{{ $masterHarga->lastPage() }})
+            @endif
+        </p>
+        <div>{{ $masterHarga->links() }}</div>
     </div>
 </div>
 

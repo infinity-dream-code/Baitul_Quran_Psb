@@ -402,6 +402,7 @@ Route::post('/PmbMstPendaftarans/update_jadwal_ujian', [UjianController::class, 
 
     Route::get('PmbMstPendaftarans/setting-gelombang', [MasterGelombangController::class, 'index2']);
 Route::get('PmbMstPendaftarans/setting-harga', [MasterHargaController::class, 'index']);
+    Route::get('PmbMstPendaftarans/setting_harga', [MasterHargaController::class, 'index']);
 Route::get('PmbMstPendaftarans/setting-pendaftaran', [MasterBiayaPendaftaranController::class, 'index2']);
 Route::resource('PmbMstPendaftarans/setting-slider',ImagesliderController::class);
 Route::resource('PmbMstPendaftarans/setting-informasi', InformasiController::class)
