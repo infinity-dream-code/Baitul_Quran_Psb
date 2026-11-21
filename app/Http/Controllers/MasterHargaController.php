@@ -437,68 +437,87 @@ public function store(Request $request)
         'harga_final' => 'required'
     ]);
 
-    $jalur = MasterJalur::findOrFail($request->id_jalur);
-    $gelombang = MasterGelombang::findOrFail($request->id_gelombang);
-    $fakultas = MasterFakultas::findOrFail($request->id_fakultas);
-    $prodi = MasterProdi::resolveFor($fakultas->id, $request->id_prodi);
+    try {
+        $jalur = MasterJalur::findOrFail($request->id_jalur);
+        $gelombang = MasterGelombang::findOrFail($request->id_gelombang);
+        $fakultas = MasterFakultas::findOrFail($request->id_fakultas);
+        $prodi = MasterProdi::resolveFor($fakultas->id, $request->id_prodi);
 
-    $hargaFinal = preg_replace('/[^0-9]/', '', $request->harga_final);
+        $hargaFinal = (int) preg_replace('/[^0-9]/', '', (string) $request->harga_final);
 
-    $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
+        $akuns = $this->fetchAkunsFromWs(__FUNCTION__);
 
-    $akunMap = [];
-    foreach ($akuns as $akun) {
-        $akunMap[$akun['KodeAkun']] = $akun['NamaAkun'];
-    }
-
-    $detail = [];
-    $hargaRegistrasi = 0;
-    if ($request->has('detail') && is_array($request->detail)) {
-        foreach ($request->detail as $row) {
-            if (!empty($row['kode']) && !empty($row['harga'])) {
-                $kode = $row['kode'];
-                $biaya = preg_replace('/[^0-9]/', '', $row['harga']);
-                $detail[] = [
-                    'no_akun' => $kode,
-                    'nama_tagihan' => $akunMap[$kode] ?? '-',
-                    'biaya' => $biaya,
-                ];
-                $hargaRegistrasi += (int) $biaya;
+        $akunMap = [];
+        foreach ($akuns as $akun) {
+            if (!empty($akun['KodeAkun'])) {
+                $akunMap[$akun['KodeAkun']] = $akun['NamaAkun'] ?? '-';
             }
         }
+
+        $detail = [];
+        $hargaRegistrasi = 0;
+        if ($request->has('detail') && is_array($request->detail)) {
+            foreach ($request->detail as $row) {
+                if (!empty($row['kode']) && isset($row['harga']) && $row['harga'] !== '') {
+                    $kode = $row['kode'];
+                    $biaya = (int) preg_replace('/[^0-9]/', '', (string) $row['harga']);
+                    $detail[] = [
+                        'no_akun' => $kode,
+                        'nama_tagihan' => $akunMap[$kode] ?? '-',
+                        'biaya' => $biaya,
+                    ];
+                    $hargaRegistrasi += $biaya;
+                }
+            }
+        }
+
+        MasterHarga::updateOrCreate(
+            [
+                'id_jalur' => $jalur->id,
+                'id_gelombang' => $gelombang->id,
+                'id_fakultas' => $fakultas->id,
+                'id_prodi' => $prodi->id,
+            ],
+            [
+                'harga_final' => $hargaFinal,
+                'harga_registrasi' => $hargaRegistrasi,
+                'detail' => $detail,
+                'nama_jalur' => $jalur->nama,
+                'nama_gelombang' => (string) $gelombang->gelombang,
+                'nama_fakultas' => $fakultas->fakultas,
+                'nama_prodi' => $prodi->nama,
+                'active' => 1,
+            ]
+        );
+
+        Temporary::updateOrCreate(
+            [
+                'id_jalur' => $jalur->id,
+                'id_fakultas' => $fakultas->id,
+                'id_prodi' => $prodi->id,
+            ],
+            [
+                'biaya_pendaftaran' => $hargaFinal,
+                'biaya_registrasi' => $hargaRegistrasi,
+                'detail' => $detail,
+            ]
+        );
+    } catch (\Throwable $e) {
+        Log::error('master_harga.store_failed', [
+            'error' => $e->getMessage(),
+            'class' => get_class($e),
+            'input' => $request->only(['id_jalur', 'id_gelombang', 'id_fakultas', 'id_prodi', 'harga_final']),
+        ]);
+
+        $msg = 'Data belum tersimpan. ';
+        if (str_contains($e->getMessage(), 'Data too long') || str_contains($e->getMessage(), '1406')) {
+            $msg .= 'Nama jalur/sekolah terlalu panjang untuk kolom database. Jalankan migrasi widen nama_jalur.';
+        } else {
+            $msg .= 'Silakan coba lagi atau hubungi admin.';
+        }
+
+        return redirect()->back()->withInput()->with('error', $msg);
     }
-
-    MasterHarga::updateOrCreate(
-        [
-            'id_jalur' => $jalur->id,
-            'id_gelombang' => $gelombang->id,
-            'id_fakultas' => $fakultas->id,
-            'id_prodi' => $prodi->id,
-        ],
-        [
-            'harga_final' => $hargaFinal,
-            'harga_registrasi' => $hargaRegistrasi,
-            'detail' => $detail,
-            'nama_jalur' => $jalur->nama,
-            'nama_gelombang' => $gelombang->gelombang,
-            'nama_fakultas' => $fakultas->fakultas,
-            'nama_prodi' => $prodi->nama,
-            'active' => 1,
-        ]
-    );
-
-    Temporary::updateOrCreate(
-        [
-            'id_jalur' => $jalur->id,
-            'id_fakultas' => $fakultas->id,
-            'id_prodi' => $prodi->id,
-        ],
-        [
-            'biaya_pendaftaran' => $hargaFinal,
-            'biaya_registrasi' => $hargaRegistrasi,
-            'detail' => $detail,
-        ]
-    );
 
     return redirect('PmbMstPendaftarans/setting-harga')->with('success', 'Data berhasil disimpan');
 }

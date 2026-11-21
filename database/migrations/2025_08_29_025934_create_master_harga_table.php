@@ -18,10 +18,10 @@ public function up(): void
         $table->unsignedBigInteger('id_fakultas');
         $table->unsignedBigInteger('id_prodi');
         $table->decimal('harga_final', 12, 2);
-        $table->string('nama_jalur', 30);
-        $table->string('nama_gelombang', 2);
-        $table->string('nama_fakultas', 30);
-        $table->string('nama_prodi', 30);
+        $table->string('nama_jalur', 150);
+        $table->string('nama_gelombang', 50);
+        $table->string('nama_fakultas', 100);
+        $table->string('nama_prodi', 100);
         $table->decimal('harga_registrasi', 12, 2);
         $table->json('detail')->nullable();
         $table->boolean('active')->default(1)->nullable();

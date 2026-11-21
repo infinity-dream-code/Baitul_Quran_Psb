@@ -10,6 +10,21 @@
             </a>
         </div>
         <div class="p-6">
+            @if(session('error'))
+                <div class="mb-4 p-4 rounded-lg border border-red-300 bg-red-50 text-red-700">{{ session('error') }}</div>
+            @endif
+            @if(session('success'))
+                <div class="mb-4 p-4 rounded-lg border border-green-300 bg-green-50 text-green-700">{{ session('success') }}</div>
+            @endif
+            @if ($errors->any())
+                <div class="mb-4 p-4 rounded-lg border border-red-300 bg-red-50 text-red-700">
+                    <ul class="list-disc list-inside text-sm space-y-1">
+                        @foreach ($errors->all() as $err)
+                            <li>{{ $err }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form action="{{ route('master-harga.store') }}" method="POST" class="space-y-6">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
