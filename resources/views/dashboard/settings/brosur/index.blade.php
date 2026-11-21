@@ -1,7 +1,7 @@
 @extends('dashboard.template')
 
 @section('content')
-<div class="max-w-5xl mx-auto bg-white shadow rounded-lg p-6 mt-5">
+<div class="bg-white shadow rounded-lg p-6">
     <div class="flex justify-between items-center mb-6">
         <h3 class="text-xl font-bold text-gray-700">Daftar Brosur</h3>
         <a href="{{ route('setting-brosur.create') }}" class="bg-green-600 hover:bg-green-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium shadow">

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -7,22 +7,33 @@
     <link rel="icon" type="image/png" href="{{ asset(config('client.logo')) }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100%;
+        }
+        body {
+            overflow-x: hidden;
+        }
         .dropdown-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
+            background-color: #16a34a !important; /* sama dengan sidebar */
         }
         .dropdown-content.active {
             max-height: 500px;
             transition: max-height 0.3s ease-in;
         }
+        .dropdown-content a.bg-green-800 {
+            background-color: #15803d !important;
+        }
         .menu-item:hover {
-            background-color: rgba(34, 197, 94, 0.1);
+            background-color: rgba(0, 0, 0, 0.12);
         }
         .user-menu {
             opacity: 0;
@@ -36,15 +47,21 @@
             transform: translateY(0);
         }
         .sidebar {
-            height: 100vh;
-            position: fixed;
+            top: 0 !important;
+            left: 0 !important;
+            height: 100vh !important;
+            position: fixed !important;
             overflow: hidden;
             z-index: 40;
+            background-color: #16a34a !important; /* hijau seragam seluruh sidebar */
+            margin: 0 !important;
+            padding: 0 !important;
         }
         .sidebar-content {
-            height: calc(100vh - 140px);
+            height: calc(100vh - 120px);
             overflow-y: auto;
             overflow-x: hidden;
+            background-color: #16a34a;
         }
         .sidebar-content::-webkit-scrollbar {
             width: 4px;
@@ -112,11 +129,11 @@
     
     <div class="flex min-h-screen">
         <div id="sidebar" class="sidebar w-64 bg-green-600 text-white">
-            <div class="p-6 text-center border-b border-green-500">
-                <div class="w-16 h-16 bg-white rounded-full mx-auto mb-3 flex items-center justify-center overflow-hidden">
-                    <img src="{{ asset(config('client.logo')) }}" alt="Logo {{ config('client.name') }}" class="w-14 h-14 object-contain">
+            <div class="px-4 py-4 text-center border-b border-green-500">
+                <div class="w-14 h-14 bg-white rounded-full mx-auto mb-2 flex items-center justify-center overflow-hidden">
+                    <img src="{{ asset(config('client.logo')) }}" alt="Logo {{ config('client.name') }}" class="w-12 h-12 object-contain">
                 </div>
-                <h3 class="font-semibold text-lg">Admin</h3>
+                <h3 class="font-semibold text-base">Admin</h3>
             </div>
 
             <div class="sidebar-content">
@@ -136,7 +153,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="masterdata-dropdown" class="dropdown-content bg-green-700">
+                            <div id="masterdata-dropdown" class="dropdown-content">
                                <a href="{{ url('/PmbMstPendaftarans/master-tahun-akademik') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Tahun Akademik</a>
 <a href="{{ url('/PmbMstPendaftarans/master-gelombang') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Tahap</a>
 <a href="{{ url('/PmbMstPendaftarans/master-jalur') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="masterdata">Jalur</a>
@@ -154,7 +171,7 @@
         </div>
         <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
     </button>
-    <div id="psb-dropdown" class="dropdown-content bg-green-700">
+    <div id="psb-dropdown" class="dropdown-content">
         <a href="{{ url('/PmbMstPendaftarans/setting-gelombang') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">Tahap PMB</a>
         <a href="{{ url('/PmbMstPendaftarans/setting-harga') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">Master Harga</a>
         <a href="{{ url('/PmbMstPendaftarans/setting-pendaftaran') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="psb">On/Off Pendaftaran</a>
@@ -173,7 +190,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="kelengkapan-dropdown" class="dropdown-content bg-green-700">
+                            <div id="kelengkapan-dropdown" class="dropdown-content">
                                 <a href="{{ url('/PmbMstPendaftarans/cek_berkas_pembayaran') }}" 
    class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" 
    data-menu="kelengkapan">
@@ -190,7 +207,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="ujian-dropdown" class="dropdown-content bg-green-700">
+                            <div id="ujian-dropdown" class="dropdown-content">
                                <a href="{{ url('PmbMstPendaftarans/cek_berkas_set_ujian') }}" 
    class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" 
    data-menu="ujian">
@@ -218,7 +235,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="kelulusan-dropdown" class="dropdown-content bg-green-700">
+                            <div id="kelulusan-dropdown" class="dropdown-content">
                                 <a href="{{url('PmbMstPendaftarans/set_kelulusan-peserta')}}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="kelulusan">Set Kelulusan</a>
                             </div>
                         </li>
@@ -230,7 +247,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="registrasi-dropdown" class="dropdown-content bg-green-700">
+                            <div id="registrasi-dropdown" class="dropdown-content">
                                 <a href="{{url('PmbMstPendaftarans/registrasi-lunas')}}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="registrasi">Registrasi Daftar Ulang Lunas</a>
                                 <a href="{{url('PmbMstPendaftarans/registrasi-cekstatus')}}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="registrasi">Cek Status</a>
                                   <a href="{{ url('/PmbMstPendaftarans/tagihan_daful') }}" 
@@ -249,7 +266,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="report-dropdown" class="dropdown-content bg-green-700">
+                            <div id="report-dropdown" class="dropdown-content">
                                 <a href="{{ route('report.rekapJumlahPendaftar') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Rekap Jumlah Pendaftar</a>
                                 <a href="{{ route('report.rekapLunasPendaftaran') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Rekap Lunas Registrasi</a>
                                 <a href="{{ route('report.rekapLunasRegistrasi') }}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="report">Rekap Lunas Registrasi Daftar Ulang</a>
@@ -267,7 +284,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="group-dropdown" class="dropdown-content bg-green-700">
+                            <div id="group-dropdown" class="dropdown-content">
                                 <a href="{{url('PmbMstPendaftarans/users')}}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="group">Users</a>
                             </div>
                         </li>
@@ -279,7 +296,7 @@
                                 </div>
                                 <i class="fas fa-chevron-down text-xs transition-transform dropdown-arrow"></i>
                             </button>
-                            <div id="edit-dropdown" class="dropdown-content bg-green-700">
+                            <div id="edit-dropdown" class="dropdown-content">
                                 <a href="{{url('PmbMstPendaftarans/list-user')}}" class="block px-12 py-2 text-sm hover:bg-green-800 transition-colors" data-menu="edit">List Pendaftar</a>
                             </div>
                         </li>
@@ -323,7 +340,9 @@
                 </div>
             </header>
 
-           @yield('content')
+            <div class="p-4 lg:p-6">
+                @yield('content')
+            </div>
         </div>
     </div>
     <script>

@@ -1,7 +1,7 @@
 @extends('dashboard.template')
 
 @section('content')
-<div id="image-slider" class="tab-content opacity-100 p-4">
+<div id="image-slider" class="tab-content opacity-100">
     <div class="flex justify-between items-center mb-6">
         <h3 class="text-xl font-bold text-gray-700">Image Slider</h3>
    <a href="{{ route('setting-slider.create') }}"

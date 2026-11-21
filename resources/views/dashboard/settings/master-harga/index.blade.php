@@ -1,7 +1,7 @@
 ﻿@extends('dashboard.template')
 
 @section('content')
-<div class="bg-white p-6 shadow rounded-lg m-4">
+<div class="bg-white p-6 shadow rounded-lg">
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-xl font-semibold text-gray-800">Master Harga PMB</h1>
         <a href="{{ url('PmbRefMasterHargaPendaftarans/add') }}"
